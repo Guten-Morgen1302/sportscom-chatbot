@@ -218,191 +218,284 @@ def generate_fallback_response(user_message, context):
 # Serve the frontend
 @app.route('/')
 def index():
-    """Serve the chat interface"""
+    """Serve the chat interface with updated design"""
+    try:
+        # Try to read the updated frontend from the parent directory
+        import os
+        parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        html_path = os.path.join(parent_dir, "static", "index.html")
+        
+        if os.path.exists(html_path):
+            with open(html_path, "r", encoding="utf-8") as f:
+                html_content = f.read()
+                # Add cache-busting headers for deployment
+                from flask import Response
+                response = Response(html_content, mimetype='text/html')
+                response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                response.headers['Pragma'] = 'no-cache'
+                response.headers['Expires'] = '0'
+                return response
+    except Exception as e:
+        print(f"Could not load static/index.html: {e}")
+    
+    # Fallback with updated UI
     html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPIT SportsCom Bot</title>
+    <title>SPIT SportsCom | Sports Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            /* Simple Red & Black Theme */
+            --bg-primary: #000000;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            
+            /* Red Accent */
+            --accent-primary: #dc2626;
+            --accent-hover: #ef4444;
+            
+            /* Borders */
+            --border-primary: #333333;
+            --border-accent: #dc2626;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .app-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
+
         .chat-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 600px;
-            height: 80vh;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-        
+
         .chat-header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 20px 24px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
-        
-        .chat-header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
         }
-        
-        .chat-header p {
-            font-size: 14px;
-            opacity: 0.9;
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
         }
-        
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 4px;
+        }
+
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
-            background-color: #f8f9fa;
+            background: var(--bg-primary);
         }
-        
+
         .message {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             padding: 12px 16px;
-            border-radius: 20px;
+            border-radius: 8px;
             max-width: 80%;
             word-wrap: break-word;
-            animation: fadeIn 0.3s ease-in;
         }
-        
+
         .user-message {
-            background: #007bff;
+            background: var(--accent-primary);
             color: white;
             margin-left: auto;
-            text-align: right;
         }
-        
+
         .bot-message {
-            background: white;
-            color: #333;
-            border: 2px solid #e9ecef;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
             margin-right: auto;
         }
-        
+
         .chat-input {
             padding: 20px;
-            background: white;
-            border-top: 1px solid #e9ecef;
-            display: flex;
-            gap: 10px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-primary);
         }
-        
-        .chat-input input {
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-container {
             flex: 1;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
             padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 14px;
             outline: none;
-            font-size: 16px;
+            transition: border-color 0.2s ease;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
         }
-        
-        .chat-input input:focus {
-            border-color: #007bff;
+
+        .input-field:focus {
+            border-color: var(--accent-primary);
         }
-        
-        .chat-input button {
-            background: #007bff;
-            color: white;
+
+        .input-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-button {
+            background: var(--accent-primary);
             border: none;
+            border-radius: 8px;
             padding: 12px 20px;
-            border-radius: 25px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-        
-        .chat-input button:hover {
-            background: #0056b3;
-        }
-        
-        .chat-input button:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .typing-indicator {
-            display: none;
-            padding: 12px 16px;
-            border-radius: 20px;
-            background: white;
-            border: 2px solid #e9ecef;
-            margin-right: auto;
-            max-width: 80%;
-            margin-bottom: 15px;
-        }
-        
-        .typing-dots {
             display: flex;
-            gap: 4px;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+            min-width: 100px;
+            justify-content: center;
         }
-        
-        .typing-dots span {
-            width: 8px;
-            height: 8px;
-            background: #999;
-            border-radius: 50%;
-            animation: typing 1.4s infinite ease-in-out;
+
+        .send-button:hover {
+            background: var(--accent-hover);
         }
-        
-        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
+
+        .welcome-message {
+            text-align: center;
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>🏏 SPIT SportsCom Bot</h1>
-            <p>Tumhara senior sports committee member - Ask anything about SPIT sports!</p>
-        </div>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-                Hey! Main tumhara SportsCom senior hun. Kuch bhi poocho sports events, committees, trials ke baare mein. Agility Cup, Spoorthi, trials - sab kuch jaanta hun! 🔥
+    <div class="app-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="header-content">
+                    <div class="header-logo">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">SPIT SportsCom</h1>
+                        <p class="header-subtitle">Your Sports Committee Assistant</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <h2 class="welcome-title">Welcome to SPIT SportsCom</h2>
+                    <p class="welcome-text">Your sports committee assistant is ready! Ask about events, trials, committee selections, and venues.</p>
+                </div>
+                
+                <div class="message bot-message">
+                    <strong>🏆 SportsCom Bot</strong><br><br>
+                    Hey! Main tumhara senior SportsCom member hun. Ask anything about sports events, trials, committee selections - sab kuch!<br><br>
+                    Just type in Hinglish! 🚀
+                </div>
             </div>
-        </div>
-        
-        <div class="chat-input">
-            <input type="text" id="messageInput" placeholder="Type your message here... (in Hinglish!)" />
-            <button onclick="sendMessage()" id="sendButton">Send</button>
+
+            <div class="chat-input">
+                <div class="input-wrapper">
+                    <div class="input-container">
+                        <textarea 
+                            id="messageInput" 
+                            class="input-field" 
+                            placeholder="Ask about sports events, trials, committees... Type in Hinglish!"
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button onclick="sendMessage()" id="sendButton" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -410,45 +503,47 @@ def index():
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-        const typingIndicator = document.getElementById('typingIndicator');
 
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 sendMessage();
             }
         });
 
-        function addMessage(message, isUser) {
+        function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
+            
+            if (isUser) {
+                const strongEl = document.createElement('strong');
+                strongEl.textContent = 'You:';
+                const contentEl = document.createElement('div');
+                contentEl.textContent = content;
+                
+                messageDiv.appendChild(strongEl);
+                messageDiv.appendChild(document.createElement('br'));
+                messageDiv.appendChild(contentEl);
+            } else {
+                const contentEl = document.createElement('div');
+                contentEl.textContent = content;
+                messageDiv.appendChild(contentEl);
+            }
+            
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function showTyping() {
-            typingIndicator.style.display = 'block';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
         }
 
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
 
-            // Disable input while processing
             messageInput.disabled = true;
             sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Processing...</span>';
 
-            // Add user message
             addMessage(message, true);
             messageInput.value = '';
-
-            // Show typing indicator
-            showTyping();
 
             try {
                 const response = await fetch('/chat', {
@@ -460,31 +555,31 @@ def index():
                 });
 
                 const data = await response.json();
-                
-                // Hide typing indicator
-                hideTyping();
-                
-                // Add bot response
-                addMessage(data.response || 'Something went wrong!', false);
+                const botResponse = data.response || 'Something went wrong! Ask this on sports update group.';
+                addMessage('🏆 SportsCom Bot: ' + botResponse);
 
             } catch (error) {
-                hideTyping();
-                addMessage('Sorry, something went wrong! Ask this on sports update group.', false);
+                addMessage('❌ Connection failed! Please try again or ask on sports update group.');
                 console.error('Error:', error);
             }
 
-            // Re-enable input
+            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
             messageInput.disabled = false;
             sendButton.disabled = false;
             messageInput.focus();
         }
 
-        // Focus on input when page loads
         messageInput.focus();
     </script>
 </body>
 </html>"""
-    return html_content
+    
+    from flask import Response
+    response = Response(html_content, mimetype='text/html')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/chat', methods=['POST'])
 def chat():
