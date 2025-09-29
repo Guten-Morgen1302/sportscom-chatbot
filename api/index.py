@@ -13,27 +13,38 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Load system prompt from root directory
+# Load system prompt and chat data
+import os
+
+# Get current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Load system prompt 
 try:
-    with open("../system_prompt.txt", "r", encoding="utf-8") as f:
+    with open(os.path.join(current_dir, "system_prompt.txt"), "r", encoding="utf-8") as f:
         SYSTEM_PROMPT = f.read()
 except FileNotFoundError:
-    with open("system_prompt.txt", "r", encoding="utf-8") as f:
-        SYSTEM_PROMPT = f.read()
+    SYSTEM_PROMPT = """You are a helpful SportsCom senior at SPIT college. Respond in Hinglish style and help students with sports queries."""
 
-# Load chat data from root directory  
+# Load chat data
 try:
-    with open("../processed_chunks.txt", "r", encoding="utf-8") as f:
+    with open(os.path.join(current_dir, "processed_chunks.txt"), "r", encoding="utf-8") as f:
         chat_data = f.read()
 except FileNotFoundError:
-    with open("processed_chunks.txt", "r", encoding="utf-8") as f:
-        chat_data = f.read()
+    chat_data = "No context data available"
 
-# Initialize Gemini
+# Initialize Gemini with safe fallback
 api_key = os.environ.get("GEMINI_API_KEY")
+model = None
 if api_key:
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        print("✅ Gemini API initialized successfully")
+    except Exception as e:
+        print(f"⚠️ Gemini initialization failed: {e}")
+else:
+    print("ℹ️ No Gemini API key - using fallback responses")
 
 # Split into chunks for easier searching
 chunks = [chunk.strip() for chunk in chat_data.split('\n\n') if chunk.strip()]
@@ -117,7 +128,7 @@ def validate_response_rules(response, user_message):
 
 def query_gemini_model(user_message, context=None):
     """Query Gemini model with proper safety checks"""
-    if not api_key:
+    if not api_key or not model:
         return generate_fallback_response(user_message, context)
     
     try:
@@ -143,20 +154,11 @@ User: {user_message}
 Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "Ask this on sports update group".
 """
 
-        # Configure safety settings
-        safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
-        ]
-        
-        # Generate response
+        # Generate response with safe configuration
         response = model.generate_content(
             prompt,
-            safety_settings=safety_settings,
             generation_config=genai.GenerationConfig(
-                max_output_tokens=1000,
+                max_output_tokens=800,
                 temperature=0.7,
                 top_k=40,
                 top_p=0.8,
@@ -508,7 +510,7 @@ def chat():
 def health():
     return jsonify({"status": "ok", "message": "SPIT SportsCom Bot is running!"})
 
-# For local development
-if __name__ == '__main__':
-    print("Starting SPIT SportsCom Bot...")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+# For local development only - removed for Vercel deployment
+# if __name__ == '__main__':
+#     print("Starting SPIT SportsCom Bot...")
+#     app.run(debug=True, host='0.0.0.0', port=5000)
