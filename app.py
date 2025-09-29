@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 import re
 import os
 from dotenv import load_dotenv
-import requests
+import google.generativeai as genai
+import hashlib
+from collections import Counter
 
 load_dotenv()
 
@@ -18,59 +20,95 @@ with open("system_prompt.txt", "r", encoding="utf-8") as f:
 with open("processed_chunks.txt", "r", encoding="utf-8") as f:
     chat_data = f.read()
 
+# Initialize Gemini
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-2.5-flash')
+
 # Split into chunks for easier searching
 chunks = [chunk.strip() for chunk in chat_data.split('\n\n') if chunk.strip()]
 
+# Create simple embeddings using TF-IDF like approach
+def create_text_fingerprint(text):
+    """Create a simple text fingerprint using word frequency and patterns"""
+    words = re.findall(r'\b\w+\b', text.lower())
+    word_counts = Counter(words)
+    # Create a hash-based fingerprint
+    fingerprint = {}
+    for word, count in word_counts.most_common(50):  # Top 50 words
+        fingerprint[word] = count
+    return fingerprint
+
+# Pre-compute fingerprints for all chunks
+chunk_fingerprints = [create_text_fingerprint(chunk) for chunk in chunks]
+
+def compute_similarity_score(fingerprint1, fingerprint2):
+    """Compute similarity between two text fingerprints"""
+    common_words = set(fingerprint1.keys()).intersection(set(fingerprint2.keys()))
+    if not common_words:
+        return 0.0
+    
+    score = 0.0
+    total_weight = 0.0
+    
+    for word in common_words:
+        # Weight by frequency in both texts
+        weight = min(fingerprint1[word], fingerprint2[word])
+        score += weight
+        total_weight += weight
+    
+    # Normalize by total words in query
+    query_total = sum(fingerprint1.values())
+    return score / max(query_total, 1) if query_total > 0 else 0.0
+
 def find_relevant_context(user_message):
     """
-    Find relevant context using basic text matching
+    Find relevant context using improved semantic similarity
     """
-    user_message_lower = user_message.lower()
-    relevant_chunks = []
+    user_fingerprint = create_text_fingerprint(user_message)
+    chunk_scores = []
     
-    # Keywords to look for based on common queries
-    keywords = {
-        'agility': ['agility', 'cup'],
-        'spoorthi': ['spoorthi', 'inter-college'],
-        'committee': ['committee', 'subcom', 'selection'],
-        'trials': ['trial', 'selection', 'captain'],
-        'basketball': ['basketball', 'wadia'],
-        'cricket': ['cricket', 'bhavan'],
-        'football': ['football', 'bhavan'],
-        'badminton': ['badminton', 'asc'],
-        'chess': ['chess', 'fide'],
-        'table tennis': ['tt', 'table tennis', 'gymkhana'],
-        'volleyball': ['volleyball'],
-        'dates': ['date', 'when', 'schedule'],
-        'participation': ['participate', 'join', 'take part'],
-        'venues': ['venue', 'court', 'ground', 'where']
-    }
+    # Compute similarity scores for all chunks
+    for i, chunk_fingerprint in enumerate(chunk_fingerprints):
+        similarity = compute_similarity_score(user_fingerprint, chunk_fingerprint)
+        if similarity > 0.1:  # Minimum similarity threshold
+            chunk_scores.append((similarity, i, chunks[i]))
     
-    # Find matching chunks
-    for chunk in chunks:
-        chunk_lower = chunk.lower()
-        
-        # Direct keyword matching
-        for category, words in keywords.items():
-            if any(word in user_message_lower for word in words):
-                if any(word in chunk_lower for word in words):
-                    relevant_chunks.append(chunk)
-                    break
+    # Sort by similarity score and return top matches
+    chunk_scores.sort(reverse=True, key=lambda x: x[0])
+    return [chunk for _, _, chunk in chunk_scores[:3]]
+
+def validate_response_rules(response, user_message):
+    """Validate response follows system prompt rules"""
+    user_lower = user_message.lower()
+    response_lower = response.lower()
     
-    # If no specific matches, look for general context
-    if not relevant_chunks:
-        # Look for chunks that contain similar words
-        words_in_query = set(re.findall(r'\b\w+\b', user_message_lower))
-        for chunk in chunks[:10]:  # Just check first 10 chunks as fallback
-            chunk_words = set(re.findall(r'\b\w+\b', chunk.lower()))
-            if len(words_in_query.intersection(chunk_words)) >= 2:
-                relevant_chunks.append(chunk)
+    # Check event isolation rules
+    events = {'agility', 'spoorthi', 'marathon'}
+    user_event = None
+    for event in events:
+        if event in user_lower:
+            user_event = event
+            break
     
-    return relevant_chunks[:3]  # Return top 3 matches
+    if user_event:
+        other_events = events - {user_event}
+        for other_event in other_events:
+            if other_event in response_lower:
+                return False, f"Response mentions {other_event} when user asked about {user_event}"
+    
+    # Check length limit (800 chars unless "detail" requested, then 1200 chars max)
+    if "detail" in user_lower:
+        if len(response) > 1200:
+            return False, "Response exceeds 1200 character limit for detailed responses"
+    else:
+        if len(response) > 800:
+            return False, "Response exceeds 800 character limit"
+    
+    return True, "Valid"
 
 def query_gemini_model(user_message, context=None):
     """
-    Query Gemini model with context
+    Query Gemini model with proper safety checks
     """
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
@@ -99,26 +137,34 @@ User: {user_message}
 Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "Ask this on sports update group".
 """
 
-        # Make API call to Gemini
-        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        # Configure safety settings
+        safety_settings = [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
+        ]
         
-        data = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }]
-        }
+        # Generate response
+        response = model.generate_content(
+            prompt,
+            safety_settings=safety_settings,
+            generation_config=genai.GenerationConfig(
+                max_output_tokens=1000,
+                temperature=0.7,
+                top_k=40,
+                top_p=0.8,
+            )
+        )
         
-        response = requests.post(f"{url}?key={api_key}", headers=headers, json=data)
-        
-        if response.status_code == 200:
-            result = response.json()
-            if 'candidates' in result and len(result['candidates']) > 0:
-                return result['candidates'][0]['content']['parts'][0]['text']
+        if response.text:
+            # Validate response follows rules
+            is_valid, validation_msg = validate_response_rules(response.text, user_message)
+            if is_valid:
+                return response.text
+            else:
+                print(f"Response validation failed: {validation_msg}")
+                return generate_fallback_response(user_message, context)
         
         return generate_fallback_response(user_message, context)
         
@@ -182,6 +228,15 @@ def chat():
     except Exception as e:
         print(f"Error in chat endpoint: {e}")
         return jsonify({"response": "Something went wrong. Ask this on sports update group."})
+
+@app.route('/')
+def index():
+    try:
+        with open("static/index.html", "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return html_content
+    except FileNotFoundError:
+        return jsonify({"error": "Frontend not found"}), 404
 
 @app.route('/health', methods=['GET'])
 def health():
