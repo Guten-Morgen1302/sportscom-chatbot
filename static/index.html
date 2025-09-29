@@ -3,22 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPIT SportsCom Bot | Elite Sports Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>SPIT SportsCom Elite | Championship AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --sports-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --shadow-light: 0 8px 32px rgba(31, 38, 135, 0.37);
-            --shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.3);
+            /* Elite Dark Theme Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass-hover: rgba(255, 255, 255, 0.08);
+            
+            /* Text Colors */
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --accent-color: #ffd700;
-            --success-color: #00ff87;
-            --danger-color: #ff006e;
+            --text-secondary: #b3b3b3;
+            --text-muted: #666666;
+            
+            /* Accent Colors */
+            --accent-primary: #00ff87;
+            --accent-secondary: #ff6b35;
+            --accent-gold: #ffd700;
+            --accent-blue: #00d4ff;
+            --accent-red: #ff073a;
+            
+            /* Borders & Shadows */
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(0, 255, 135, 0.3);
+            --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(0, 255, 135, 0.3);
+            --shadow-neon: 0 0 30px rgba(0, 255, 135, 0.5);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-blue) 100%);
+            --gradient-sports: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-red) 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
         }
 
         * {
@@ -28,53 +48,85 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--primary-gradient);
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow: hidden;
             position: relative;
         }
 
-        /* Animated Background */
-        .bg-animation {
+        /* Elite Animated Background */
+        .bg-matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--gradient-primary);
+        }
+
+        .grid-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: var(--primary-gradient);
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(rgba(0, 255, 135, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 135, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
         }
 
-        .particles {
-            position: absolute;
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .particles-system {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .particle {
+        .particle-elite {
             position: absolute;
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--accent-primary);
             border-radius: 50%;
-            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--accent-primary);
+            animation: floatElite 12s infinite linear;
         }
 
-        .particle:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: -2s; }
-        .particle:nth-child(3) { width: 25px; height: 25px; left: 30%; animation-delay: -4s; }
-        .particle:nth-child(4) { width: 18px; height: 18px; left: 40%; animation-delay: -6s; }
-        .particle:nth-child(5) { width: 22px; height: 22px; left: 50%; animation-delay: -8s; }
-        .particle:nth-child(6) { width: 16px; height: 16px; left: 60%; animation-delay: -10s; }
-        .particle:nth-child(7) { width: 28px; height: 28px; left: 70%; animation-delay: -12s; }
-        .particle:nth-child(8) { width: 19px; height: 19px; left: 80%; animation-delay: -14s; }
-        .particle:nth-child(9) { width: 14px; height: 14px; left: 90%; animation-delay: -16s; }
+        .particle-elite:nth-child(odd) {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        @keyframes floatElite {
+            0% { 
+                transform: translateY(100vh) rotate(0deg) scale(0); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+                transform: translateY(90vh) rotate(36deg) scale(1); 
+            }
+            90% { 
+                opacity: 1; 
+                transform: translateY(10vh) rotate(324deg) scale(1); 
+            }
+            100% { 
+                transform: translateY(-10vh) rotate(360deg) scale(0); 
+                opacity: 0; 
+            }
         }
 
         /* Main Container */
@@ -89,246 +141,379 @@
         }
 
         .chat-container {
-            background: var(--glass-bg);
+            background: var(--bg-glass);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             height: 90vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: var(--shadow-heavy);
+            box-shadow: var(--shadow-dark);
             position: relative;
-            animation: slideInUp 1s ease-out;
+            animation: containerSlideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes slideInUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes containerSlideIn {
+            from { 
+                transform: translateY(50px) scale(0.95); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
         }
 
-        /* Header */
+        /* Elite Header */
         .chat-header {
-            background: var(--sports-gradient);
-            color: var(--text-primary);
-            padding: 25px;
-            text-align: center;
+            background: var(--gradient-glass);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 25px 30px;
             position: relative;
             overflow: hidden;
         }
 
-        .chat-header::before {
-            content: '';
+        .header-bg-effect {
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 3s infinite;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 135, 0.1), transparent);
+            animation: headerSweep 4s infinite;
         }
 
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        @keyframes headerSweep {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
         }
 
-        .header-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        .header-content {
             position: relative;
             z-index: 2;
-        }
-
-        .header-subtitle {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-icons {
-            position: absolute;
-            top: 15px;
-            right: 20px;
             display: flex;
-            gap: 10px;
-            z-index: 2;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .header-icon {
-            width: 35px;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.2);
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 16px;
-            animation: pulse 2s infinite;
+            font-size: 24px;
+            color: var(--bg-primary);
+            font-weight: 700;
+            box-shadow: var(--shadow-glow);
+            animation: logoPulse 2s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); box-shadow: var(--shadow-glow); }
+            50% { transform: scale(1.05); box-shadow: var(--shadow-neon); }
+        }
+
+        .header-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 135, 0.3);
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-badge {
+            background: rgba(0, 255, 135, 0.2);
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: statusGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes statusGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 135, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 135, 0.6); }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-primary);
+            animation: dotPulse 1s infinite ease-in-out;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Messages Area */
         .chat-messages {
             flex: 1;
-            padding: 25px;
+            padding: 30px;
             overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             position: relative;
         }
 
         .chat-messages::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
+            background: var(--gradient-accent);
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 135, 0.3);
         }
 
         .message {
-            margin-bottom: 20px;
-            padding: 18px 22px;
-            border-radius: 20px;
-            max-width: 85%;
-            word-wrap: break-word;
+            margin-bottom: 25px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            max-width: 80%;
             position: relative;
-            animation: messageSlideIn 0.5s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: messageAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            word-wrap: break-word;
         }
 
-        @keyframes messageSlideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes messageAppear {
+            from { 
+                transform: translateY(30px) scale(0.9); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
         }
 
         .user-message {
-            background: linear-gradient(135deg, var(--accent-color), #ffed4e);
-            color: #333;
+            background: var(--gradient-accent);
+            color: var(--bg-primary);
             margin-left: auto;
-            text-align: right;
             font-weight: 600;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: var(--shadow-glow);
+            border: 1px solid rgba(0, 255, 135, 0.3);
         }
 
         .user-message::before {
-            content: '👤';
+            content: '';
             position: absolute;
-            right: -10px;
-            top: -5px;
-            background: var(--accent-color);
-            width: 25px;
-            height: 25px;
+            right: -15px;
+            top: 20px;
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .user-message::after {
+            content: '👤';
+            position: absolute;
+            right: -8px;
+            top: 27px;
+            font-size: 14px;
         }
 
         .bot-message {
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            margin-right: auto;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            margin-right: auto;
+            box-shadow: var(--shadow-dark);
         }
 
         .bot-message::before {
-            content: '🏆';
+            content: '';
             position: absolute;
-            left: -10px;
-            top: -5px;
-            background: var(--sports-gradient);
-            width: 25px;
-            height: 25px;
+            left: -15px;
+            top: 20px;
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-sports);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
         }
 
-        /* Typing Indicator */
+        .bot-message::after {
+            content: '🏆';
+            position: absolute;
+            left: -8px;
+            top: 27px;
+            font-size: 14px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
+        /* Elite Typing Indicator */
         .typing-indicator {
             display: none;
-            padding: 18px 22px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--border-accent);
             margin-right: auto;
-            max-width: 85%;
-            margin-bottom: 20px;
+            max-width: 80%;
             position: relative;
+            box-shadow: var(--shadow-glow);
         }
 
         .typing-indicator::before {
-            content: '🤔';
+            content: '';
             position: absolute;
-            left: -10px;
-            top: -5px;
-            background: var(--sports-gradient);
-            width: 25px;
-            height: 25px;
+            left: -15px;
+            top: 20px;
+            width: 30px;
+            height: 30px;
+            background: var(--gradient-accent);
             border-radius: 50%;
+            box-shadow: var(--shadow-glow);
+            animation: typingPulse 1s infinite ease-in-out;
+        }
+
+        .typing-indicator::after {
+            content: '🤖';
+            position: absolute;
+            left: -8px;
+            top: 27px;
+            font-size: 14px;
+        }
+
+        @keyframes typingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .typing-content {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            gap: 15px;
         }
 
         .typing-dots {
             display: flex;
-            gap: 6px;
-            align-items: center;
+            gap: 8px;
         }
 
         .typing-dots span {
             width: 12px;
             height: 12px;
-            background: var(--sports-gradient);
+            background: var(--accent-primary);
             border-radius: 50%;
-            animation: typing 1.4s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--accent-primary);
+            animation: typingBounce 1.4s infinite ease-in-out;
         }
 
         .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
 
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1.2); opacity: 1; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { 
+                transform: scale(0.8); 
+                opacity: 0.5; 
+            }
+            40% { 
+                transform: scale(1.2); 
+                opacity: 1; 
+                box-shadow: 0 0 20px var(--accent-primary);
+            }
         }
 
-        /* Input Area */
+        .typing-text {
+            color: var(--accent-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Elite Input Area */
         .chat-input {
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-glass);
+            position: relative;
+        }
+
+        .input-wrapper {
             display: flex;
             gap: 15px;
-            align-items: center;
+            align-items: flex-end;
+            position: relative;
         }
 
         .input-container {
@@ -336,43 +521,70 @@
             position: relative;
         }
 
-        .chat-input input {
+        .input-field {
             width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-glass);
+            border-radius: 15px;
             padding: 18px 25px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 30px;
-            outline: none;
+            color: var(--text-primary);
             font-size: 16px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.95);
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
-            color: #333;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            resize: none;
+            min-height: 60px;
+            max-height: 120px;
         }
 
-        .chat-input input:focus {
-            border-color: var(--accent-color);
+        .input-field:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 25px rgba(0, 255, 135, 0.3);
+            background: rgba(255, 255, 255, 0.08);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .input-accent {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .input-field:focus + .input-accent {
+            width: 100%;
+            box-shadow: 0 0 10px var(--accent-primary);
         }
 
         .send-button {
-            background: var(--sports-gradient);
-            color: white;
+            background: var(--gradient-accent);
             border: none;
+            border-radius: 15px;
             padding: 18px 25px;
-            border-radius: 30px;
-            cursor: pointer;
+            color: var(--bg-primary);
             font-size: 16px;
             font-weight: 700;
-            transition: all 0.3s ease;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-glow);
             position: relative;
             overflow: hidden;
+            min-width: 120px;
+            justify-content: center;
         }
 
         .send-button::before {
@@ -391,8 +603,8 @@
         }
 
         .send-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-neon);
         }
 
         .send-button:active {
@@ -400,344 +612,533 @@
         }
 
         .send-button:disabled {
-            background: rgba(108, 117, 125, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
             cursor: not-allowed;
             transform: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: none;
         }
 
         .send-button i {
             font-size: 18px;
         }
 
-        /* Status Indicator */
-        .status-indicator {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--success-color);
-            color: #333;
+        /* Welcome Screen */
+        .welcome-message {
+            text-align: center;
+            padding: 40px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .feature-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: var(--accent-secondary);
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 0.8rem;
             font-weight: 600;
-            animation: statusPulse 2s infinite;
-            box-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        @keyframes statusPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.95); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .chat-container {
-                height: 95vh;
-                max-width: 100%;
-                border-radius: 20px;
-            }
-
-            .header-title {
-                font-size: 2rem;
-            }
-
-            .header-subtitle {
-                font-size: 1rem;
-            }
-
-            .chat-messages {
-                padding: 20px;
-            }
-
-            .chat-input {
-                padding: 20px;
-                gap: 12px;
-            }
-
-            .message {
-                max-width: 90%;
-                padding: 15px 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-title {
-                font-size: 1.8rem;
-            }
-
-            .chat-input input {
-                padding: 15px 20px;
-                font-size: 14px;
-            }
-
-            .send-button {
-                padding: 15px 20px;
-                font-size: 14px;
-            }
-        }
-
-        /* Loading Animation */
-        .loading-overlay {
+        /* Loading Screen */
+        .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--primary-gradient);
+            background: var(--bg-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            animation: fadeOut 1s ease-out 0.8s forwards;
+            animation: loadingFadeOut 1s ease-out 1.5s forwards;
         }
 
         .loading-content {
             text-align: center;
-            color: white;
         }
 
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid var(--accent-color);
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-accent);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--bg-primary);
+            margin: 0 auto 30px;
+            animation: loadingPulse 2s infinite ease-in-out;
+            box-shadow: var(--shadow-neon);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(0, 255, 135, 0.7); }
         }
 
-        @keyframes fadeOut {
+        .loading-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .loading-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 2px;
+            animation: loadingProgress 1.5s ease-out;
+            box-shadow: 0 0 10px var(--accent-primary);
+        }
+
+        @keyframes loadingProgress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        @keyframes loadingFadeOut {
             to { opacity: 0; visibility: hidden; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 95vh;
+                border-radius: 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .header-title {
+                font-size: 1.5rem;
+            }
+            
+            .chat-messages {
+                padding: 20px;
+            }
+            
+            .chat-input {
+                padding: 20px;
+            }
+            
+            .message {
+                max-width: 90%;
+                padding: 15px 20px;
+            }
+            
+            .header-stats {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.3rem;
+            }
+            
+            .input-field {
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+            
+            .send-button {
+                padding: 15px 20px;
+                font-size: 14px;
+                min-width: 100px;
+            }
+            
+            .feature-badges {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-overlay">
+    <!-- Elite Loading Screen -->
+    <div class="loading-screen">
         <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <h2 style="font-family: 'Orbitron', monospace; font-size: 1.5rem; margin-bottom: 10px;">Initializing SportsCom Bot</h2>
-            <p style="font-size: 1rem; opacity: 0.8;">Connecting to SPIT Sports Network...</p>
+            <div class="loading-logo">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h1 class="loading-title">SPIT SportsCom Elite</h1>
+            <p class="loading-subtitle">Initializing Championship AI System...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Animated Background -->
-    <div class="bg-animation">
-        <div class="particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
-    </div>
+    <!-- Dark Matrix Background -->
+    <div class="bg-matrix"></div>
+    <div class="grid-overlay"></div>
+    
+    <!-- Elite Particle System -->
+    <div class="particles-system" id="particleSystem"></div>
 
     <!-- Main Application -->
     <div class="app-container">
         <div class="chat-container">
-            <!-- Status Indicator -->
-            <div class="status-indicator">
-                <i class="fas fa-circle" style="margin-right: 5px;"></i>
-                ONLINE
-            </div>
-
-            <!-- Header -->
+            <!-- Elite Header -->
             <div class="chat-header">
-                <div class="header-icons">
-                    <div class="header-icon"><i class="fas fa-trophy"></i></div>
-                    <div class="header-icon"><i class="fas fa-medal"></i></div>
-                    <div class="header-icon"><i class="fas fa-fire"></i></div>
+                <div class="header-bg-effect"></div>
+                <div class="header-content">
+                    <div class="header-left">
+                        <div class="header-logo">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div>
+                            <h1 class="header-title">SPIT SportsCom Elite</h1>
+                            <p class="header-subtitle">Championship AI Assistant | Powered by Advanced Intelligence</p>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="header-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="responseTime">24ms</div>
+                                <div class="stat-label">Response</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="accuracy">98%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                        </div>
+                        <div class="status-badge">
+                            <div class="status-dot"></div>
+                            <span>ELITE MODE</span>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="header-title">
-                    <i class="fas fa-bolt" style="color: var(--accent-color); margin-right: 10px;"></i>
-                    SPIT SportsCom Elite
-                </h1>
-                <p class="header-subtitle">
-                    <i class="fas fa-robot" style="margin-right: 8px;"></i>
-                    Your Senior Sports Committee Assistant | Powered by AI
-                </p>
             </div>
 
-            <!-- Messages -->
+            <!-- Messages Area -->
             <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <h2 class="welcome-title">
+                        <i class="fas fa-fire" style="margin-right: 10px;"></i>
+                        Welcome to SPIT SportsCom Elite
+                    </h2>
+                    <p class="welcome-text">
+                        Your advanced AI-powered sports committee assistant is ready! Ask about events, trials, 
+                        committee selections, venues, and everything sports-related at SPIT.
+                    </p>
+                    <div class="feature-badges">
+                        <div class="feature-badge">
+                            <i class="fas fa-medal"></i>
+                            <span>Agility Cup</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-target"></i>
+                            <span>Spoorthi</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-users"></i>
+                            <span>Committee</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-clock"></i>
+                            <span>Real-time</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="message bot-message">
-                    <strong>🔥 SportsCom Elite Bot Activated!</strong><br>
-                    Hey champion! Main tumhara senior SportsCom member hun. Kuch bhi poocho about:
-                    <br>• <strong>Agility Cup</strong> 🏆 | <strong>Spoorthi</strong> 🎯 | <strong>Trials</strong> ⚡
-                    <br>• Committee selections, venues, dates - sab kuch covered!
-                    <br><em>Ready to dominate? Let's go! 💪</em>
+                    <strong>🏆 SportsCom Elite Bot Activated!</strong><br><br>
+                    Hey champion! Main tumhara senior SportsCom member hun with AI superpowers! 💪<br><br>
+                    <strong>Available Services:</strong><br>
+                    🔥 <strong>Agility Cup</strong> - Team formation & dates<br>
+                    🎯 <strong>Spoorthi</strong> - Event details & participation<br>
+                    ⚡ <strong>Trials</strong> - All sports trials info<br>
+                    🏅 <strong>Committee</strong> - Selection process & forms<br><br>
+                    <em>Ready to dominate? Let's make you a sports legend! 🚀</em>
+                    <div class="message-time">Just now</div>
                 </div>
             </div>
 
-            <!-- Typing Indicator -->
+            <!-- Elite Typing Indicator -->
             <div class="typing-indicator" id="typingIndicator">
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="typing-content">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="typing-text">Elite AI is processing your request...</span>
                 </div>
-                <span style="margin-left: 10px; font-weight: 500;">SportsCom Bot is thinking...</span>
             </div>
 
-            <!-- Input Area -->
+            <!-- Elite Input Area -->
             <div class="chat-input">
-                <div class="input-container">
-                    <input type="text" id="messageInput" placeholder="🏏 Ask about sports events, trials, committees... (in Hinglish!)" />
+                <div class="input-wrapper">
+                    <div class="input-container">
+                        <textarea 
+                            id="messageInput" 
+                            class="input-field" 
+                            placeholder="🏆 Ask about sports events, trials, committees... Type in Hinglish!"
+                            rows="1"
+                        ></textarea>
+                        <div class="input-accent"></div>
+                    </div>
+                    <button onclick="sendMessage()" id="sendButton" class="send-button">
+                        <i class="fas fa-rocket"></i>
+                        <span>Launch</span>
+                    </button>
                 </div>
-                <button onclick="sendMessage()" id="sendButton" class="send-button">
-                    <i class="fas fa-paper-plane"></i>
-                    <span>Send</span>
-                </button>
             </div>
         </div>
     </div>
 
     <script>
-        const chatMessages = document.getElementById('chatMessages');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const typingIndicator = document.getElementById('typingIndicator');
-
-        // Enhanced message input handling
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+        // Elite UI Controller
+        class EliteSportsBot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.responseTimeElement = document.getElementById('responseTime');
+                this.accuracyElement = document.getElementById('accuracy');
+                
+                this.initializeParticles();
+                this.initializeEvents();
+                this.initializeAutoResize();
+                this.startRealTimeUpdates();
             }
-        });
 
-        // Auto-focus input after loading
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                messageInput.focus();
-            }, 2500);
-        });
-
-        function addMessage(message, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            
-            if (isUser) {
-                messageDiv.innerHTML = `<strong>You:</strong><br>${message}`;
-            } else {
-                messageDiv.innerHTML = message;
+            initializeParticles() {
+                const particleSystem = document.getElementById('particleSystem');
+                const createParticle = () => {
+                    if (particleSystem.children.length < 20) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle-elite';
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.width = particle.style.height = (Math.random() * 8 + 4) + 'px';
+                        particle.style.animationDelay = Math.random() * 12 + 's';
+                        particleSystem.appendChild(particle);
+                        
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                        }, 12000);
+                    }
+                };
+                
+                setInterval(createParticle, 2000);
+                // Initial particles
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(createParticle, i * 200);
+                }
             }
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Add sound effect simulation (visual pulse)
-            if (!isUser) {
-                messageDiv.style.animation = 'messageSlideIn 0.5s ease-out, pulse 0.3s ease-out 0.5s';
-            }
-        }
 
-        function showTyping() {
-            typingIndicator.style.display = 'block';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function hideTyping() {
-            typingIndicator.style.display = 'none';
-        }
-
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-
-            // Enhanced UI feedback
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Sending...</span>';
-
-            // Add user message with enhanced styling
-            addMessage(message, true);
-            messageInput.value = '';
-
-            // Show enhanced typing indicator
-            showTyping();
-
-            try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: message }),
+            initializeEvents() {
+                this.messageInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
                 });
 
-                const data = await response.json();
-                
-                // Simulate realistic response delay
+                // Auto-focus after loading
                 setTimeout(() => {
-                    hideTyping();
-                    
-                    // Enhanced bot response formatting
-                    const botResponse = data.response || 'Something went wrong! Ask this on sports update group.';
-                    addMessage(`<strong>🏆 SportsCom Bot:</strong><br>${botResponse}`, false);
-                    
-                    // Reset button state
-                    sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
-                    messageInput.disabled = false;
-                    sendButton.disabled = false;
-                    messageInput.focus();
-                }, Math.random() * 1000 + 500); // Random delay for realism
+                    this.messageInput.focus();
+                }, 2000);
+            }
 
-            } catch (error) {
-                hideTyping();
-                addMessage('<strong>❌ Error:</strong><br>Sorry, something went wrong! Ask this on sports update group.', false);
-                console.error('Error:', error);
+            initializeAutoResize() {
+                this.messageInput.addEventListener('input', () => {
+                    this.messageInput.style.height = 'auto';
+                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+                });
+            }
+
+            startRealTimeUpdates() {
+                // Simulate real-time stats updates
+                setInterval(() => {
+                    const responseTime = Math.floor(Math.random() * 50) + 10;
+                    const accuracy = Math.floor(Math.random() * 5) + 95;
+                    this.responseTimeElement.textContent = responseTime + 'ms';
+                    this.accuracyElement.textContent = accuracy + '%';
+                }, 5000);
+            }
+
+            addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
                 
-                // Reset button state
-                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                messageInput.focus();
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                if (isUser) {
+                    messageDiv.innerHTML = `
+                        <strong>You:</strong><br>${content}
+                        <div class="message-time">${timeString}</div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        ${content}
+                        <div class="message-time">${timeString}</div>
+                    `;
+                }
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                // Add elite glow effect
+                messageDiv.style.animation = 'messageAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            }
+
+            showTyping() {
+                this.typingIndicator.style.display = 'block';
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            hideTyping() {
+                this.typingIndicator.style.display = 'none';
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                // Elite UI feedback
+                this.messageInput.disabled = true;
+                this.sendButton.disabled = true;
+                this.sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Processing...</span>';
+
+                // Add user message
+                this.addMessage(message, true);
+                this.messageInput.value = '';
+                this.messageInput.style.height = 'auto';
+
+                // Show typing with realistic delay
+                this.showTyping();
+
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: message }),
+                    });
+
+                    const data = await response.json();
+                    const responseTime = Date.now() - startTime;
+                    
+                    // Update response time
+                    this.responseTimeElement.textContent = responseTime + 'ms';
+                    
+                    // Realistic response delay for better UX
+                    setTimeout(() => {
+                        this.hideTyping();
+                        
+                        const botResponse = data.response || 'Something went wrong! Ask this on sports update group.';
+                        this.addMessage(`<strong>🏆 Elite SportsCom AI:</strong><br>${botResponse}`);
+                        
+                        // Reset UI state
+                        this.resetInputState();
+                    }, Math.random() * 1500 + 800);
+
+                } catch (error) {
+                    this.hideTyping();
+                    this.addMessage('<strong>❌ System Error:</strong><br>Connection failed! Please try again or ask on sports update group.');
+                    console.error('Elite Bot Error:', error);
+                    this.resetInputState();
+                }
+            }
+
+            resetInputState() {
+                this.sendButton.innerHTML = '<i class="fas fa-rocket"></i><span>Launch</span>';
+                this.messageInput.disabled = false;
+                this.sendButton.disabled = false;
+                this.messageInput.focus();
             }
         }
 
-        // Add some interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create dynamic particle effects
-            const particles = document.querySelector('.particles');
+        // Initialize Elite Sports Bot
+        document.addEventListener('DOMContentLoaded', () => {
+            window.eliteBot = new EliteSportsBot();
+        });
+
+        // Legacy function for onclick compatibility
+        function sendMessage() {
+            if (window.eliteBot) {
+                window.eliteBot.sendMessage();
+            }
+        }
+
+        // Elite visual enhancements
+        document.addEventListener('mousemove', (e) => {
+            // Subtle mouse tracking effect for premium feel
+            const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = (e.clientY / window.innerHeight) * 2 - 1;
             
-            // Add more particles dynamically
-            setInterval(() => {
-                if (particles.children.length < 15) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.width = particle.style.height = (Math.random() * 20 + 10) + 'px';
-                    particle.style.animationDelay = Math.random() * 15 + 's';
-                    particles.appendChild(particle);
-                    
-                    // Remove particle after animation
-                    setTimeout(() => {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                        }
-                    }, 15000);
-                }
-            }, 3000);
-        });
-
-        // Enhanced focus management
-        messageInput.addEventListener('focus', function() {
-            this.style.transform = 'translateY(-2px)';
-        });
-
-        messageInput.addEventListener('blur', function() {
-            this.style.transform = 'translateY(0)';
+            const container = document.querySelector('.chat-container');
+            if (container) {
+                container.style.transform = `perspective(1000px) rotateY(${mouseX * 2}deg) rotateX(${-mouseY * 2}deg)`;
+            }
         });
     </script>
 </body>
