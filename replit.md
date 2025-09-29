@@ -67,7 +67,10 @@ A sophisticated AI-powered chatbot designed for SPIT SportsCom committee to help
 - **Command**: `python app.py`
 
 ## Environment Variables
-- `GEMINI_API_KEY` - Google Gemini API key (optional - has fallbacks)
+- `GEMINI_API_KEY` - Google Gemini API key (securely managed via Replit Secrets)
+  - ✅ Can be updated anytime through Replit's environment variable panel
+  - ✅ Graceful fallback to rule-based responses when unavailable
+  - ✅ No hardcoded keys anywhere in the codebase
 
 ## Known Issues
 - LSP diagnostics show import errors (cosmetic only - app runs fine)

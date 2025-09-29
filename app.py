@@ -3,7 +3,8 @@ from flask_cors import CORS
 import re
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import hashlib
 from collections import Counter
 
@@ -20,9 +21,16 @@ with open("system_prompt.txt", "r", encoding="utf-8") as f:
 with open("processed_chunks.txt", "r", encoding="utf-8") as f:
     chat_data = f.read()
 
-# Initialize Gemini
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-2.5-flash')
+# Initialize Gemini with secure environment variable management
+# Using Replit's integration for secure API key handling
+client = None
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    client = genai.Client(api_key=api_key)
+    print("✅ Gemini API key found - AI responses enabled!")
+else:
+    print("ℹ️  No Gemini API key found - using fallback responses")
+    print("   You can add your API key anytime in Replit Secrets as GEMINI_API_KEY")
 
 # Split into chunks for easier searching
 chunks = [chunk.strip() for chunk in chat_data.split('\n\n') if chunk.strip()]
@@ -108,10 +116,9 @@ def validate_response_rules(response, user_message):
 
 def query_gemini_model(user_message, context=None):
     """
-    Query Gemini model with proper safety checks
+    Query Gemini model with proper safety checks using the new SDK
     """
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
+    if not client:
         return generate_fallback_response(user_message, context)
     
     try:
@@ -137,19 +144,11 @@ User: {user_message}
 Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "Ask this on sports update group".
 """
 
-        # Configure safety settings
-        safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
-        ]
-        
-        # Generate response
-        response = model.generate_content(
-            prompt,
-            safety_settings=safety_settings,
-            generation_config=genai.GenerationConfig(
+        # Generate response using the new SDK
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",  # Using the latest model
+            contents=prompt,
+            config=types.GenerateContentConfig(
                 max_output_tokens=1000,
                 temperature=0.7,
                 top_k=40,
@@ -158,22 +157,16 @@ Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "
         )
         
         # Check if response has content and text
-        if response and response.candidates and len(response.candidates) > 0:
-            candidate = response.candidates[0]
-            if candidate.content and candidate.content.parts:
-                response_text = ""
-                for part in candidate.content.parts:
-                    if hasattr(part, 'text') and part.text:
-                        response_text += part.text
-                
-                if response_text.strip():
-                    # Validate response follows rules
-                    is_valid, validation_msg = validate_response_rules(response_text, user_message)
-                    if is_valid:
-                        return response_text
-                    else:
-                        print(f"Response validation failed: {validation_msg}")
-                        return generate_fallback_response(user_message, context)
+        if response and response.text:
+            response_text = response.text.strip()
+            if response_text:
+                # Validate response follows rules
+                is_valid, validation_msg = validate_response_rules(response_text, user_message)
+                if is_valid:
+                    return response_text
+                else:
+                    print(f"Response validation failed: {validation_msg}")
+                    return generate_fallback_response(user_message, context)
         
         print(f"No valid response from Gemini API")
         return generate_fallback_response(user_message, context)
