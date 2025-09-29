@@ -234,7 +234,17 @@ def index():
     try:
         with open("static/index.html", "r", encoding="utf-8") as f:
             html_content = f.read()
-        return html_content
+        
+        # Add cache-busting headers for Replit environment
+        response = app.response_class(
+            response=html_content,
+            status=200,
+            mimetype='text/html'
+        )
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
     except FileNotFoundError:
         return jsonify({"error": "Frontend not found"}), 404
 

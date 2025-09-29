@@ -1120,6 +1120,14 @@
         // Initialize Elite Sports Bot
         document.addEventListener('DOMContentLoaded', () => {
             window.eliteBot = new EliteSportsBot();
+            
+            // Ensure loading screen is removed after animation completes
+            setTimeout(() => {
+                const loadingScreen = document.querySelector('.loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
+            }, 100); // Quick removal for testing
         });
 
         // Legacy function for onclick compatibility
