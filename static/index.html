@@ -865,13 +865,12 @@
                 this.messageInput = document.getElementById('messageInput');
                 this.sendButton = document.getElementById('sendButton');
                 this.typingIndicator = document.getElementById('typingIndicator');
-                this.responseTimeElement = document.getElementById('responseTime');
-                this.accuracyElement = document.getElementById('accuracy');
+                // Stats elements removed for simple design
                 
                 this.initializeParticles();
                 this.initializeEvents();
                 this.initializeAutoResize();
-                this.startRealTimeUpdates();
+                // Real-time updates removed for simple design
             }
 
             initializeParticles() {
@@ -921,15 +920,7 @@
                 });
             }
 
-            startRealTimeUpdates() {
-                // Simulate real-time stats updates
-                setInterval(() => {
-                    const responseTime = Math.floor(Math.random() * 50) + 10;
-                    const accuracy = Math.floor(Math.random() * 5) + 95;
-                    this.responseTimeElement.textContent = responseTime + 'ms';
-                    this.accuracyElement.textContent = accuracy + '%';
-                }, 5000);
-            }
+            // Stats updates removed for simple design
 
             addMessage(content, isUser = false) {
                 const messageDiv = document.createElement('div');
@@ -996,8 +987,7 @@
                     const data = await response.json();
                     const responseTime = Date.now() - startTime;
                     
-                    // Update response time
-                    this.responseTimeElement.textContent = responseTime + 'ms';
+                    // Response time tracking removed for simple design
                     
                     // Realistic response delay for better UX
                     setTimeout(() => {

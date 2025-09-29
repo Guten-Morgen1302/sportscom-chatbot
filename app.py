@@ -157,15 +157,25 @@ Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "
             )
         )
         
-        if response.text:
-            # Validate response follows rules
-            is_valid, validation_msg = validate_response_rules(response.text, user_message)
-            if is_valid:
-                return response.text
-            else:
-                print(f"Response validation failed: {validation_msg}")
-                return generate_fallback_response(user_message, context)
+        # Check if response has content and text
+        if response and response.candidates and len(response.candidates) > 0:
+            candidate = response.candidates[0]
+            if candidate.content and candidate.content.parts:
+                response_text = ""
+                for part in candidate.content.parts:
+                    if hasattr(part, 'text') and part.text:
+                        response_text += part.text
+                
+                if response_text.strip():
+                    # Validate response follows rules
+                    is_valid, validation_msg = validate_response_rules(response_text, user_message)
+                    if is_valid:
+                        return response_text
+                    else:
+                        print(f"Response validation failed: {validation_msg}")
+                        return generate_fallback_response(user_message, context)
         
+        print(f"No valid response from Gemini API")
         return generate_fallback_response(user_message, context)
         
     except Exception as e:
