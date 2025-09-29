@@ -3,185 +3,602 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPIT SportsCom Bot</title>
+    <title>SPIT SportsCom Bot | Elite Sports Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --sports-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-light: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --accent-color: #ffd700;
+            --success-color: #00ff87;
+            --danger-color: #ff006e;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--primary-gradient);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: -2s; }
+        .particle:nth-child(3) { width: 25px; height: 25px; left: 30%; animation-delay: -4s; }
+        .particle:nth-child(4) { width: 18px; height: 18px; left: 40%; animation-delay: -6s; }
+        .particle:nth-child(5) { width: 22px; height: 22px; left: 50%; animation-delay: -8s; }
+        .particle:nth-child(6) { width: 16px; height: 16px; left: 60%; animation-delay: -10s; }
+        .particle:nth-child(7) { width: 28px; height: 28px; left: 70%; animation-delay: -12s; }
+        .particle:nth-child(8) { width: 19px; height: 19px; left: 80%; animation-delay: -14s; }
+        .particle:nth-child(9) { width: 14px; height: 14px; left: 90%; animation-delay: -16s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main Container */
+        .app-container {
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .chat-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 600px;
-            height: 80vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            animation: slideInUp 1s ease-out;
         }
-        
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Header */
         .chat-header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 20px;
+            background: var(--sports-gradient);
+            color: var(--text-primary);
+            padding: 25px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .chat-header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
         }
-        
-        .chat-header p {
-            font-size: 14px;
-            opacity: 0.9;
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: #f8f9fa;
+
+        .header-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
         }
-        
-        .message {
-            margin-bottom: 15px;
-            padding: 12px 16px;
-            border-radius: 20px;
-            max-width: 80%;
-            word-wrap: break-word;
-            animation: fadeIn 0.3s ease-in;
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 2;
         }
-        
-        .user-message {
-            background: #007bff;
-            color: white;
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .bot-message {
-            background: white;
-            color: #333;
-            border: 2px solid #e9ecef;
-            margin-right: auto;
-        }
-        
-        .chat-input {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #e9ecef;
+
+        .header-icons {
+            position: absolute;
+            top: 15px;
+            right: 20px;
             display: flex;
             gap: 10px;
+            z-index: 2;
         }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            outline: none;
-            font-size: 16px;
-        }
-        
-        .chat-input input:focus {
-            border-color: #007bff;
-        }
-        
-        .chat-input button {
-            background: #007bff;
+
+        .header-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
             font-size: 16px;
-            transition: background 0.3s;
+            animation: pulse 2s infinite;
         }
-        
-        .chat-input button:hover {
-            background: #0056b3;
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
-        
-        .chat-input button:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
+
+        /* Messages Area */
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
         }
-        
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 18px 22px;
+            border-radius: 20px;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            animation: messageSlideIn 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes messageSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--accent-color), #ffed4e);
+            color: #333;
+            margin-left: auto;
+            text-align: right;
+            font-weight: 600;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .user-message::before {
+            content: '👤';
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            background: var(--accent-color);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .bot-message {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            margin-right: auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .bot-message::before {
+            content: '🏆';
+            position: absolute;
+            left: -10px;
+            top: -5px;
+            background: var(--sports-gradient);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Typing Indicator */
         .typing-indicator {
             display: none;
-            padding: 12px 16px;
+            padding: 18px 22px;
             border-radius: 20px;
-            background: white;
-            border: 2px solid #e9ecef;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             margin-right: auto;
-            max-width: 80%;
-            margin-bottom: 15px;
+            max-width: 85%;
+            margin-bottom: 20px;
+            position: relative;
         }
-        
+
+        .typing-indicator::before {
+            content: '🤔';
+            position: absolute;
+            left: -10px;
+            top: -5px;
+            background: var(--sports-gradient);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
         .typing-dots {
             display: flex;
-            gap: 4px;
+            gap: 6px;
+            align-items: center;
         }
-        
+
         .typing-dots span {
-            width: 8px;
-            height: 8px;
-            background: #999;
+            width: 12px;
+            height: 12px;
+            background: var(--sports-gradient);
             border-radius: 50%;
             animation: typing 1.4s infinite ease-in-out;
         }
-        
+
         .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-        
+
         @keyframes typing {
             0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Input Area */
+        .chat-input {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-input input {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            outline: none;
+            font-size: 16px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-input input:focus {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .send-button {
+            background: var(--sports-gradient);
+            color: white;
+            border: none;
+            padding: 18px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .send-button:hover::before {
+            left: 100%;
+        }
+
+        .send-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+        }
+
+        .send-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .send-button:disabled {
+            background: rgba(108, 117, 125, 0.6);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .send-button i {
+            font-size: 18px;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--success-color);
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: statusPulse 2s infinite;
+            box-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 95vh;
+                max-width: 100%;
+                border-radius: 20px;
+            }
+
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+
+            .chat-messages {
+                padding: 20px;
+            }
+
+            .chat-input {
+                padding: 20px;
+                gap: 12px;
+            }
+
+            .message {
+                max-width: 90%;
+                padding: 15px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .chat-input input {
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+
+            .send-button {
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease-out 0.8s forwards;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>🏏 SPIT SportsCom Bot</h1>
-            <p>Tumhara senior sports committee member - Ask anything about SPIT sports!</p>
+    <!-- Loading Screen -->
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 style="font-family: 'Orbitron', monospace; font-size: 1.5rem; margin-bottom: 10px;">Initializing SportsCom Bot</h2>
+            <p style="font-size: 1rem; opacity: 0.8;">Connecting to SPIT Sports Network...</p>
         </div>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-                Hey! Main tumhara SportsCom senior hun. Kuch bhi poocho sports events, committees, trials ke baare mein. Agility Cup, Spoorthi, trials - sab kuch jaanta hun! 🔥
+    </div>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+        <div class="chat-container">
+            <!-- Status Indicator -->
+            <div class="status-indicator">
+                <i class="fas fa-circle" style="margin-right: 5px;"></i>
+                ONLINE
             </div>
-        </div>
-        
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="header-icons">
+                    <div class="header-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="header-icon"><i class="fas fa-medal"></i></div>
+                    <div class="header-icon"><i class="fas fa-fire"></i></div>
+                </div>
+                <h1 class="header-title">
+                    <i class="fas fa-bolt" style="color: var(--accent-color); margin-right: 10px;"></i>
+                    SPIT SportsCom Elite
+                </h1>
+                <p class="header-subtitle">
+                    <i class="fas fa-robot" style="margin-right: 8px;"></i>
+                    Your Senior Sports Committee Assistant | Powered by AI
+                </p>
             </div>
-        </div>
-        
-        <div class="chat-input">
-            <input type="text" id="messageInput" placeholder="Type your message here... (in Hinglish!)" />
-            <button onclick="sendMessage()" id="sendButton">Send</button>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <strong>🔥 SportsCom Elite Bot Activated!</strong><br>
+                    Hey champion! Main tumhara senior SportsCom member hun. Kuch bhi poocho about:
+                    <br>• <strong>Agility Cup</strong> 🏆 | <strong>Spoorthi</strong> 🎯 | <strong>Trials</strong> ⚡
+                    <br>• Committee selections, venues, dates - sab kuch covered!
+                    <br><em>Ready to dominate? Let's go! 💪</em>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span style="margin-left: 10px; font-weight: 500;">SportsCom Bot is thinking...</span>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input">
+                <div class="input-container">
+                    <input type="text" id="messageInput" placeholder="🏏 Ask about sports events, trials, committees... (in Hinglish!)" />
+                </div>
+                <button onclick="sendMessage()" id="sendButton" class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -191,18 +608,38 @@
         const sendButton = document.getElementById('sendButton');
         const typingIndicator = document.getElementById('typingIndicator');
 
+        // Enhanced message input handling
         messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 sendMessage();
             }
+        });
+
+        // Auto-focus input after loading
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                messageInput.focus();
+            }, 2500);
         });
 
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
+            
+            if (isUser) {
+                messageDiv.innerHTML = `<strong>You:</strong><br>${message}`;
+            } else {
+                messageDiv.innerHTML = message;
+            }
+            
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Add sound effect simulation (visual pulse)
+            if (!isUser) {
+                messageDiv.style.animation = 'messageSlideIn 0.5s ease-out, pulse 0.3s ease-out 0.5s';
+            }
         }
 
         function showTyping() {
@@ -218,15 +655,16 @@
             const message = messageInput.value.trim();
             if (!message) return;
 
-            // Disable input while processing
+            // Enhanced UI feedback
             messageInput.disabled = true;
             sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Sending...</span>';
 
-            // Add user message
+            // Add user message with enhanced styling
             addMessage(message, true);
             messageInput.value = '';
 
-            // Show typing indicator
+            // Show enhanced typing indicator
             showTyping();
 
             try {
@@ -240,26 +678,67 @@
 
                 const data = await response.json();
                 
-                // Hide typing indicator
-                hideTyping();
-                
-                // Add bot response
-                addMessage(data.response || 'Something went wrong!', false);
+                // Simulate realistic response delay
+                setTimeout(() => {
+                    hideTyping();
+                    
+                    // Enhanced bot response formatting
+                    const botResponse = data.response || 'Something went wrong! Ask this on sports update group.';
+                    addMessage(`<strong>🏆 SportsCom Bot:</strong><br>${botResponse}`, false);
+                    
+                    // Reset button state
+                    sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
+                    messageInput.disabled = false;
+                    sendButton.disabled = false;
+                    messageInput.focus();
+                }, Math.random() * 1000 + 500); // Random delay for realism
 
             } catch (error) {
                 hideTyping();
-                addMessage('Sorry, something went wrong! Ask this on sports update group.', false);
+                addMessage('<strong>❌ Error:</strong><br>Sorry, something went wrong! Ask this on sports update group.', false);
                 console.error('Error:', error);
+                
+                // Reset button state
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
             }
-
-            // Re-enable input
-            messageInput.disabled = false;
-            sendButton.disabled = false;
-            messageInput.focus();
         }
 
-        // Focus on input when page loads
-        messageInput.focus();
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create dynamic particle effects
+            const particles = document.querySelector('.particles');
+            
+            // Add more particles dynamically
+            setInterval(() => {
+                if (particles.children.length < 15) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.width = particle.style.height = (Math.random() * 20 + 10) + 'px';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particles.appendChild(particle);
+                    
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 15000);
+                }
+            }, 3000);
+        });
+
+        // Enhanced focus management
+        messageInput.addEventListener('focus', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+
+        messageInput.addEventListener('blur', function() {
+            this.style.transform = 'translateY(0)';
+        });
     </script>
 </body>
 </html>
