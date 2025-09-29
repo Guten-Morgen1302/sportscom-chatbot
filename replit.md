@@ -41,6 +41,7 @@ Preferred communication style: Simple, everyday language.
 ### AI Services
 - **Google Generative AI**: Gemini 2.5-flash model for natural language understanding and generation with safety settings
 - **API Authentication**: Environment-based API key management via Replit Secrets
+- **Setup Required**: User must add `GEMINI_API_KEY` through Replit Secrets pane for full AI functionality
 
 ### Python Libraries
 - **Flask**: Web framework for API endpoints and request handling
@@ -58,3 +59,15 @@ Preferred communication style: Simple, everyday language.
 - **Vercel Optimization**: Stateless design with response size constraints
 - **Resource Management**: Efficient memory usage with pre-computed embeddings
 - **Performance**: Fast response times through cached text fingerprints
+- **Replit Deployment**: Configured for autoscale deployment with Flask production server
+
+## Recent Changes
+
+### September 29, 2025 - Replit Environment Setup
+- Installed all Python dependencies (Flask, google-generativeai, etc.)
+- Configured Flask app for Replit environment with proper host binding (0.0.0.0:5000)
+- Set up workflow for development server
+- Configured deployment settings for autoscale production deployment
+- Added Gemini API integration with Replit Secrets (user must provide GEMINI_API_KEY)
+- Verified frontend and backend functionality with fallback response system
+- Application runs successfully with responsive chat interface
