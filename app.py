@@ -3,8 +3,7 @@ from flask_cors import CORS
 import re
 import os
 from dotenv import load_dotenv
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 import hashlib
 from collections import Counter
 
@@ -23,10 +22,9 @@ with open("processed_chunks.txt", "r", encoding="utf-8") as f:
 
 # Initialize Gemini with secure environment variable management
 # Using Replit's integration for secure API key handling
-client = None
 api_key = os.environ.get("GEMINI_API_KEY")
 if api_key:
-    client = genai.Client(api_key=api_key)
+    genai.configure(api_key=api_key)
     print("✅ Gemini API key found - AI responses enabled!")
 else:
     print("ℹ️  No Gemini API key found - using fallback responses")
@@ -118,7 +116,7 @@ def query_gemini_model(user_message, context=None):
     """
     Query Gemini model with proper safety checks using the new SDK
     """
-    if not client:
+    if not api_key:
         return generate_fallback_response(user_message, context)
     
     try:
@@ -144,11 +142,11 @@ User: {user_message}
 Respond as a SPIT SportsCom senior student in Hinglish. If you don't know, say "Ask this on sports update group".
 """
 
-        # Generate response using the new SDK
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",  # Using the latest model
-            contents=prompt,
-            config=types.GenerateContentConfig(
+        # Generate response using the correct API
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(
+            prompt,
+            generation_config=genai.types.GenerationConfig(
                 max_output_tokens=1000,
                 temperature=0.7,
                 top_k=40,
