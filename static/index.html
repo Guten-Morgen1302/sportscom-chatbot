@@ -3,40 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPIT SportsCom Elite | Championship AI Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>SPIT SportsCom | Sports Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            /* Killer Red & Black Theme */
+            /* Simple Red & Black Theme */
             --bg-primary: #000000;
-            --bg-secondary: #0d0d0d;
-            --bg-tertiary: #1a1a1a;
-            --bg-glass: rgba(255, 0, 0, 0.05);
-            --bg-glass-hover: rgba(255, 0, 0, 0.1);
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
             
             /* Text Colors */
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
             --text-muted: #888888;
             
-            /* Red Accent Colors */
-            --accent-primary: #ff0040;
-            --accent-secondary: #ff3366;
-            --accent-dark: #cc0033;
-            --accent-bright: #ff6699;
+            /* Red Accent */
+            --accent-primary: #dc2626;
+            --accent-hover: #ef4444;
             
-            /* Borders & Shadows */
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --border-accent: rgba(255, 0, 64, 0.4);
-            --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.8);
-            --shadow-glow: 0 0 25px rgba(255, 0, 64, 0.4);
-            --shadow-neon: 0 0 40px rgba(255, 0, 64, 0.6);
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, #000000 0%, #1a0000 100%);
-            --gradient-accent: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            --gradient-glass: linear-gradient(135deg, rgba(255,0,0,0.1) 0%, rgba(255,0,0,0.05) 100%);
+            /* Borders */
+            --border-primary: #333333;
+            --border-accent: #dc2626;
         }
 
         * {
@@ -46,152 +34,39 @@
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            overflow: hidden;
-            position: relative;
         }
 
-        /* Elite Animated Background */
-        .bg-matrix {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: var(--gradient-primary);
-        }
-
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.08;
-            background-image: 
-                linear-gradient(rgba(255, 0, 64, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 64, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .particles-system {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle-elite {
-            position: absolute;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--accent-primary);
-            animation: floatElite 15s infinite linear;
-        }
-
-        .particle-elite:nth-child(odd) {
-            background: var(--accent-secondary);
-            box-shadow: 0 0 15px var(--accent-secondary);
-        }
-
-        @keyframes floatElite {
-            0% { 
-                transform: translateY(100vh) rotate(0deg) scale(0); 
-                opacity: 0; 
-            }
-            10% { 
-                opacity: 1; 
-                transform: translateY(90vh) rotate(36deg) scale(1); 
-            }
-            90% { 
-                opacity: 1; 
-                transform: translateY(10vh) rotate(324deg) scale(1); 
-            }
-            100% { 
-                transform: translateY(-10vh) rotate(360deg) scale(0); 
-                opacity: 0; 
-            }
-        }
-
-        /* Main Container */
         .app-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            position: relative;
-            z-index: 1;
         }
 
         .chat-container {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 800px;
             height: 90vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: var(--shadow-dark);
-            position: relative;
-            animation: containerSlideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @keyframes containerSlideIn {
-            from { 
-                transform: translateY(50px) scale(0.95); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
-        }
-
-        /* Elite Header */
         .chat-header {
-            background: var(--gradient-glass);
-            border-bottom: 1px solid var(--border-glass);
-            padding: 25px 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-bg-effect {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 0, 64, 0.1), transparent);
-            animation: headerSweep 6s infinite;
-        }
-
-        @keyframes headerSweep {
-            0%, 100% { left: -100%; }
-            50% { left: 100%; }
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 20px 24px;
         }
 
         .header-content {
-            position: relative;
-            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -199,209 +74,106 @@
         }
 
         .header-logo {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-accent);
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            color: #000000;
-            font-weight: 700;
-            box-shadow: var(--shadow-glow);
-            margin-right: 15px;
+            font-size: 18px;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
         }
 
         .header-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         .header-subtitle {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
             font-weight: 400;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* Messages Area */
         .chat-messages {
             flex: 1;
-            padding: 30px;
+            padding: 24px;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.2);
-            position: relative;
+            background: var(--bg-primary);
         }
 
         .chat-messages::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: var(--bg-secondary);
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--gradient-accent);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 255, 135, 0.3);
+            background: var(--border-primary);
+            border-radius: 3px;
         }
 
         .message {
-            margin-bottom: 25px;
-            padding: 20px 25px;
-            border-radius: 15px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 8px;
             max-width: 80%;
-            position: relative;
-            animation: messageAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             word-wrap: break-word;
         }
 
-        @keyframes messageAppear {
-            from { 
-                transform: translateY(30px) scale(0.9); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
-        }
-
         .user-message {
-            background: var(--gradient-accent);
-            color: var(--bg-primary);
+            background: var(--accent-primary);
+            color: white;
             margin-left: auto;
-            font-weight: 600;
-            box-shadow: var(--shadow-glow);
-            border: 1px solid rgba(0, 255, 135, 0.3);
-        }
-
-        .user-message::before {
-            content: '';
-            position: absolute;
-            right: -15px;
-            top: 20px;
-            width: 30px;
-            height: 30px;
-            background: var(--gradient-accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .user-message::after {
-            content: '👤';
-            position: absolute;
-            right: -8px;
-            top: 27px;
-            font-size: 14px;
         }
 
         .bot-message {
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-glass);
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
             color: var(--text-primary);
             margin-right: auto;
-            box-shadow: var(--shadow-dark);
-        }
-
-        .bot-message::before {
-            content: '';
-            position: absolute;
-            left: -15px;
-            top: 20px;
-            width: 30px;
-            height: 30px;
-            background: var(--gradient-sports);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
-        }
-
-        .bot-message::after {
-            content: '🏆';
-            position: absolute;
-            left: -8px;
-            top: 27px;
-            font-size: 14px;
         }
 
         .message-time {
             font-size: 0.75rem;
             color: var(--text-muted);
-            margin-top: 8px;
-            opacity: 0.7;
+            margin-top: 6px;
         }
 
-        /* Elite Typing Indicator */
         .typing-indicator {
             display: none;
-            margin-bottom: 25px;
-            padding: 20px 25px;
-            border-radius: 15px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-accent);
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
             margin-right: auto;
             max-width: 80%;
-            position: relative;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .typing-indicator::before {
-            content: '';
-            position: absolute;
-            left: -15px;
-            top: 20px;
-            width: 30px;
-            height: 30px;
-            background: var(--gradient-accent);
-            border-radius: 50%;
-            box-shadow: var(--shadow-glow);
-            animation: typingPulse 1s infinite ease-in-out;
-        }
-
-        .typing-indicator::after {
-            content: '🤖';
-            position: absolute;
-            left: -8px;
-            top: 27px;
-            font-size: 14px;
-        }
-
-        @keyframes typingPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
         }
 
         .typing-content {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
 
         .typing-dots {
             display: flex;
-            gap: 8px;
+            gap: 4px;
         }
 
         .typing-dots span {
-            width: 10px;
-            height: 10px;
+            width: 6px;
+            height: 6px;
             background: var(--accent-primary);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--accent-primary);
             animation: typingBounce 1.4s infinite ease-in-out;
         }
 
@@ -409,372 +181,162 @@
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
 
         @keyframes typingBounce {
-            0%, 80%, 100% { 
-                transform: scale(0.8); 
-                opacity: 0.5; 
-            }
-            40% { 
-                transform: scale(1.2); 
-                opacity: 1; 
-                box-shadow: 0 0 20px var(--accent-primary);
-            }
+            0%, 80%, 100% { opacity: 0.3; }
+            40% { opacity: 1; }
         }
 
         .typing-text {
-            color: var(--accent-primary);
-            font-weight: 500;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
-        /* Elite Input Area */
         .chat-input {
-            padding: 30px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-glass);
-            position: relative;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-primary);
         }
 
         .input-wrapper {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: flex-end;
-            position: relative;
         }
 
         .input-container {
             flex: 1;
-            position: relative;
         }
 
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--border-glass);
-            border-radius: 15px;
-            padding: 18px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
             color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: border-color 0.2s ease;
             resize: none;
-            min-height: 60px;
+            min-height: 44px;
             max-height: 120px;
         }
 
         .input-field:focus {
             border-color: var(--accent-primary);
-            box-shadow: 0 0 25px rgba(0, 255, 135, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
         }
 
         .input-field::placeholder {
             color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .input-accent {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-accent);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
-        .input-field:focus + .input-accent {
-            width: 100%;
-            box-shadow: 0 0 10px var(--accent-primary);
         }
 
         .send-button {
-            background: var(--gradient-accent);
+            background: var(--accent-primary);
             border: none;
-            border-radius: 15px;
-            padding: 18px 25px;
-            color: var(--bg-primary);
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 8px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-glow);
-            position: relative;
-            overflow: hidden;
-            min-width: 120px;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+            min-width: 100px;
             justify-content: center;
         }
 
-        .send-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .send-button:hover::before {
-            left: 100%;
-        }
-
         .send-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: var(--shadow-neon);
-        }
-
-        .send-button:active {
-            transform: translateY(-1px) scale(0.98);
+            background: var(--accent-hover);
         }
 
         .send-button:disabled {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--border-primary);
             color: var(--text-muted);
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         .send-button i {
-            font-size: 18px;
+            font-size: 16px;
         }
 
-        /* Welcome Screen */
         .welcome-message {
             text-align: center;
-            padding: 40px;
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-bottom: 24px;
         }
 
         .welcome-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
         }
 
         .welcome-text {
             color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 1rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
         .feature-badges {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
         .feature-badge {
-            background: rgba(255, 0, 64, 0.1);
-            border: 1px solid rgba(255, 0, 64, 0.3);
-            color: var(--accent-primary);
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-        }
-
-        .feature-badge:hover {
-            background: rgba(255, 0, 64, 0.2);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            animation: loadingFadeOut 1s ease-out 1.5s forwards;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-logo {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient-accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: var(--bg-primary);
-            margin: 0 auto 30px;
-            animation: loadingPulse 2s infinite ease-in-out;
-            box-shadow: var(--shadow-neon);
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(0, 255, 135, 0.7); }
-        }
-
-        .loading-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-
-        .loading-subtitle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
             color: var(--text-secondary);
-            font-size: 1rem;
-            margin-bottom: 30px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .loading-bar {
-            width: 300px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-
-        .loading-progress {
-            height: 100%;
-            background: var(--gradient-accent);
-            border-radius: 2px;
-            animation: loadingProgress 1.5s ease-out;
-            box-shadow: 0 0 10px var(--accent-primary);
-        }
-
-        @keyframes loadingProgress {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-
-        @keyframes loadingFadeOut {
-            to { opacity: 0; visibility: hidden; }
-        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .app-container {
-                padding: 10px;
+                padding: 12px;
             }
             
             .chat-container {
-                height: 95vh;
-                border-radius: 15px;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .header-title {
-                font-size: 1.5rem;
-            }
-            
-            .chat-messages {
-                padding: 20px;
-            }
-            
-            .chat-input {
-                padding: 20px;
+                height: 100vh;
+                border-radius: 0;
             }
             
             .message {
-                max-width: 90%;
-                padding: 15px 20px;
-            }
-            
-            .header-stats {
-                gap: 15px;
+                max-width: 85%;
             }
         }
 
         @media (max-width: 480px) {
             .header-title {
-                font-size: 1.3rem;
+                font-size: 1.25rem;
             }
             
             .input-field {
-                padding: 15px 20px;
-                font-size: 14px;
-            }
-            
-            .send-button {
-                padding: 15px 20px;
-                font-size: 14px;
-                min-width: 100px;
-            }
-            
-            .feature-badges {
-                flex-direction: column;
-                align-items: center;
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Elite Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <i class="fas fa-bolt"></i>
-            </div>
-            <h1 class="loading-title">SPIT SportsCom</h1>
-            <p class="loading-subtitle">Loading Sports Assistant...</p>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dark Matrix Background -->
-    <div class="bg-matrix"></div>
-    <div class="grid-overlay"></div>
-    
-    <!-- Elite Particle System -->
-    <div class="particles-system" id="particleSystem"></div>
 
     <!-- Main Application -->
     <div class="app-container">
         <div class="chat-container">
-            <!-- Elite Header -->
             <div class="chat-header">
-                <div class="header-bg-effect"></div>
                 <div class="header-content">
                     <div class="header-logo">
                         <i class="fas fa-trophy"></i>
@@ -790,7 +352,6 @@
             <div class="chat-messages" id="chatMessages">
                 <div class="welcome-message">
                     <h2 class="welcome-title">
-                        <i class="fas fa-fire" style="margin-right: 10px;"></i>
                         Welcome to SPIT SportsCom
                     </h2>
                     <p class="welcome-text">
@@ -798,11 +359,9 @@
                     </p>
                     <div class="feature-badges">
                         <div class="feature-badge">
-                            <i class="fas fa-medal"></i>
                             <span>Agility Cup</span>
                         </div>
                         <div class="feature-badge">
-                            <i class="fas fa-target"></i>
                             <span>Spoorthi</span>
                         </div>
                         <div class="feature-badge">
@@ -849,8 +408,8 @@
                         <div class="input-accent"></div>
                     </div>
                     <button onclick="sendMessage()" id="sendButton" class="send-button">
-                        <i class="fas fa-rocket"></i>
-                        <span>Launch</span>
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send</span>
                     </button>
                 </div>
             </div>
@@ -867,37 +426,11 @@
                 this.typingIndicator = document.getElementById('typingIndicator');
                 // Stats elements removed for simple design
                 
-                this.initializeParticles();
                 this.initializeEvents();
                 this.initializeAutoResize();
                 // Real-time updates removed for simple design
             }
 
-            initializeParticles() {
-                const particleSystem = document.getElementById('particleSystem');
-                const createParticle = () => {
-                    if (particleSystem.children.length < 20) {
-                        const particle = document.createElement('div');
-                        particle.className = 'particle-elite';
-                        particle.style.left = Math.random() * 100 + '%';
-                        particle.style.width = particle.style.height = (Math.random() * 8 + 4) + 'px';
-                        particle.style.animationDelay = Math.random() * 12 + 's';
-                        particleSystem.appendChild(particle);
-                        
-                        setTimeout(() => {
-                            if (particle.parentNode) {
-                                particle.parentNode.removeChild(particle);
-                            }
-                        }, 12000);
-                    }
-                };
-                
-                setInterval(createParticle, 2000);
-                // Initial particles
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(createParticle, i * 200);
-                }
-            }
 
             initializeEvents() {
                 this.messageInput.addEventListener('keydown', (e) => {
@@ -930,15 +463,27 @@
                 const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 
                 if (isUser) {
-                    messageDiv.innerHTML = `
-                        <strong>You:</strong><br>${content}
-                        <div class="message-time">${timeString}</div>
-                    `;
+                    const strongEl = document.createElement('strong');
+                    strongEl.textContent = 'You:';
+                    const contentEl = document.createElement('div');
+                    contentEl.textContent = content;
+                    const timeEl = document.createElement('div');
+                    timeEl.className = 'message-time';
+                    timeEl.textContent = timeString;
+                    
+                    messageDiv.appendChild(strongEl);
+                    messageDiv.appendChild(document.createElement('br'));
+                    messageDiv.appendChild(contentEl);
+                    messageDiv.appendChild(timeEl);
                 } else {
-                    messageDiv.innerHTML = `
-                        ${content}
-                        <div class="message-time">${timeString}</div>
-                    `;
+                    const contentEl = document.createElement('div');
+                    contentEl.textContent = content;
+                    const timeEl = document.createElement('div');
+                    timeEl.className = 'message-time';
+                    timeEl.textContent = timeString;
+                    
+                    messageDiv.appendChild(contentEl);
+                    messageDiv.appendChild(timeEl);
                 }
                 
                 this.chatMessages.appendChild(messageDiv);
@@ -994,7 +539,7 @@
                         this.hideTyping();
                         
                         const botResponse = data.response || 'Something went wrong! Ask this on sports update group.';
-                        this.addMessage(`<strong>🏆 Elite SportsCom AI:</strong><br>${botResponse}`);
+                        this.addMessage('🏆 SportsCom Bot: ' + botResponse);
                         
                         // Reset UI state
                         this.resetInputState();
@@ -1009,7 +554,7 @@
             }
 
             resetInputState() {
-                this.sendButton.innerHTML = '<i class="fas fa-rocket"></i><span>Launch</span>';
+                this.sendButton.innerHTML = '<i class="fas fa-paper-plane"></i><span>Send</span>';
                 this.messageInput.disabled = false;
                 this.sendButton.disabled = false;
                 this.messageInput.focus();
@@ -1036,17 +581,6 @@
             }
         }
 
-        // Elite visual enhancements
-        document.addEventListener('mousemove', (e) => {
-            // Subtle mouse tracking effect for premium feel
-            const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-            const mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-            
-            const container = document.querySelector('.chat-container');
-            if (container) {
-                container.style.transform = `perspective(1000px) rotateY(${mouseX * 2}deg) rotateX(${-mouseY * 2}deg)`;
-            }
-        });
     </script>
 </body>
 </html>
