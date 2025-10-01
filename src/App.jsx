@@ -315,7 +315,7 @@ function App() {
                   className="group flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl glass-button text-white/70 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto justify-center min-h-[44px]"
                 >
                   <FaWhatsapp className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 group-hover:text-green-300 transition-colors" />
-                  <span className="text-sm font-medium">WhatsApp</span>
+                  <span className="text-sm font-medium">WhatsApp Update Group</span>
                   <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
                 </a>
                 <a
