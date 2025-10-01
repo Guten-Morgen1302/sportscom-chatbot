@@ -101,9 +101,7 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 ├── main.py              # FastAPI application
 ├── bot.py               # SportsBot class
 ├── context.txt          # Knowledge base
-├── .env                 # Environment variables
-├── api/
-│   └── index.py         # Vercel serverless entry point
+├── .env                 # Environment variables (not committed to Git)
 ├── static/
 │   └── index.html       # Frontend application
 ├── requirements.txt     # Python dependencies
@@ -113,6 +111,11 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 
 ## Vercel Deployment
 The project is configured for one-click Vercel deployment:
-- `vercel.json` - Configures Vercel to use Python serverless functions
-- `api/index.py` - Entry point for Vercel serverless deployment
-- Make sure to set `GEMINI_API_KEY` in Vercel environment variables
+1. Push your code to GitHub
+2. Connect GitHub repo to Vercel
+3. In Vercel project settings, add environment variables:
+   - `GEMINI_API_KEY` - Your Google Gemini API key
+   - `GEMINI_MODEL` - gemini-2.5-flash
+   - `API_TEMPERATURE` - 0.3
+   - `API_MAX_TOKENS` - 500
+4. Deploy - Vercel will automatically use `vercel.json` configuration
