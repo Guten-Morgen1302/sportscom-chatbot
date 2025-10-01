@@ -1,0 +1,397 @@
+import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import axios from 'axios';
+import {
+  MessageCircle,
+  Trash2,
+  Send,
+  User,
+  Sparkles,
+  Loader2,
+  Trophy,
+  ExternalLink,
+} from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+
+function App() {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    }
+  }, [inputMessage]);
+
+  // Keep-alive functionality for production (prevents Render server from sleeping)
+  useEffect(() => {
+    const isProduction = import.meta.env.PROD;
+    
+    if (!isProduction) {
+      console.log('Keep-alive disabled in development mode');
+      return;
+    }
+
+    console.log('Keep-alive enabled for production');
+    
+    const keepAlive = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+        const response = await axios.post(`${apiUrl}/keep-alive`);
+        console.log('Keep-alive ping sent:', new Date().toISOString());
+      } catch (error) {
+        console.warn('Keep-alive ping failed:', error.message);
+      }
+    };
+
+    // Send initial keep-alive after 30 seconds
+    const initialTimeout = setTimeout(() => {
+      keepAlive();
+    }, 30000);
+
+    // Send keep-alive every 10 minutes (600,000 milliseconds)
+    const keepAliveInterval = setInterval(keepAlive, 600000);
+
+    // Cleanup on unmount
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(keepAliveInterval);
+      console.log('Keep-alive cleanup completed');
+    };
+  }, []);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const sendMessage = async () => {
+    if (!inputMessage.trim()) return;
+
+    const userMessage = inputMessage.trim();
+    setInputMessage('');
+
+    const newUserMessage = {
+      id: Date.now(),
+      type: 'user',
+      text: userMessage,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, newUserMessage]);
+    setIsLoading(true);
+
+    try {
+      // Get the API base URL from environment variables
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+      const response = await axios.post(`${apiUrl}/chat`, {
+        message: userMessage,
+      });
+
+      const newBotMessage = {
+        id: Date.now() + 1,
+        type: 'assistant',
+        text: response.data.response,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, newBotMessage]);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error calling API:', error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        type: 'assistant',
+        text: 'Sorry, I encountered an error. Make sure the backend server is running.',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+  };
+
+  const examplePrompts = [
+    'What is agility?',
+    'How is the culture in sports committee?',
+    "Why should I join sports committee?",
+    'What is the venue for basketball?',
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-900 to-gray-950 relative overflow-hidden">
+      {/* Subtle ambient lighting */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/8 sm:bg-blue-500/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-56 sm:w-80 h-56 sm:h-80 bg-purple-500/8 sm:bg-purple-500/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-white/[0.01] sm:bg-white/[0.02] rounded-full filter blur-3xl"></div>
+      </div>
+      
+      {/* Subtle floating elements - reduced on mobile */}
+      <div className="absolute inset-0 pointer-events-none hidden sm:block">
+        <div className="absolute top-20 right-20 w-32 h-32 bg-white rounded-full opacity-[0.03] filter blur-2xl animate-glass-float"></div>
+        <div className="absolute bottom-32 left-20 w-24 h-24 bg-white rounded-full opacity-[0.04] filter blur-xl animate-glass-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-20 h-20 bg-white rounded-full opacity-[0.02] filter blur-xl animate-glass-drift"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-28 h-28 bg-white rounded-full opacity-[0.03] filter blur-2xl animate-glass-float" style={{ animationDelay: '4s' }}></div>
+      </div>
+      
+      {/* Minimal mobile floating elements */}
+      <div className="absolute inset-0 pointer-events-none sm:hidden">
+        <div className="absolute top-32 right-12 w-20 h-20 bg-white rounded-full opacity-[0.02] filter blur-xl animate-glass-pulse"></div>
+        <div className="absolute bottom-20 left-12 w-16 h-16 bg-white rounded-full opacity-[0.025] filter blur-lg animate-glass-drift"></div>
+      </div>
+
+      {/* Main container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-3 sm:p-6 lg:p-8">
+        <div className="w-full max-w-4xl h-[92vh] sm:h-[88vh] flex flex-col glass-panel rounded-2xl sm:rounded-[32px] shadow-glass-xl overflow-hidden">
+          {/* Header */}
+          <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-white/[0.06] glass-panel-dark">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-button flex items-center justify-center flex-shrink-0">
+                <img src="/sports-favicon.jpg" alt="" />
+              </div>
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-xl font-semibold text-white tracking-tight truncate">Athlos - Sports AI</h1>
+                <p className="text-xs sm:text-sm text-white/50 font-medium hidden xs:block">Your intelligent sports assistant</p>
+              </div>
+            </div>
+            <button
+              onClick={clearChat}
+              className="glass-button flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-white/70 hover:text-white flex-shrink-0"
+            >
+              <Trash2 className="w-4 h-4" strokeWidth={1.5} />
+              <span className="hidden sm:inline text-sm font-medium">Clear</span>
+              <span className="sm:hidden text-xs font-medium">Clear</span>
+            </button>
+          </header>
+
+          {/* Chat area */}
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 glass-scroll">
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center px-2 sm:px-6">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 tracking-tight leading-tight">
+                  How can I help you today?
+                </h2>
+                <p className="text-white/60 mb-4 max-w-sm sm:max-w-lg text-sm sm:text-base leading-relaxed font-medium px-4 sm:px-0">
+                  I'm your Sports Committee AI assistant - Athlos. Ask me about schedules, members,
+                  registration, budgets, and more!
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-3xl">
+                  {examplePrompts.map((prompt, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setInputMessage(prompt)}
+                      className="group text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl glass-button text-white/60 hover:text-white/90 transition-all duration-300 hover:scale-[1.01]"
+                    >
+                      <div className="flex items-start gap-3 sm:gap-3.5">
+                        <div className="mt-0.5 p-2 sm:p-2.5 rounded-lg sm:rounded-xl glass-panel-dark flex-shrink-0">
+                          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70" strokeWidth={1.5} />
+                        </div>
+                        <span className="text-xs sm:text-sm font-medium leading-relaxed">{prompt}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6 sm:space-y-8 max-w-3xl mx-auto">
+                {messages.map((message) => (
+                  <div key={message.id} className="flex gap-3 sm:gap-5 group animate-slideIn">
+                    <div className="flex-shrink-0 w-9 h-9 sm:w-11 sm:h-11">
+                      {message.type === 'user' ? (
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-button flex items-center justify-center">
+                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" strokeWidth={1.5} />
+                        </div>
+                      ) : (
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-panel-dark flex items-center justify-center">
+                          <img src="/sports-favicon.jpg" alt="" />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-2 sm:space-y-3 min-w-0">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="text-xs sm:text-sm font-semibold text-white/90 tracking-wide">
+                          {message.type === 'user' ? 'You' : 'Athlos'}
+                        </span>
+                        <span className="text-xs text-white/40 font-medium">
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+
+                      <div
+                        className={`rounded-2xl sm:rounded-3xl px-4 py-3 sm:px-5 sm:py-4 ${
+                          message.type === 'user'
+                            ? 'glass-message-user text-white/95'
+                            : 'glass-message text-white/85'
+                        }`}
+                      >
+                        {message.type === 'user' ? (
+                          <p className="text-sm sm:text-sm leading-relaxed font-medium">{message.text}</p>
+                        ) : (
+                          <div className="prose prose-invert prose-sm max-w-none">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed font-medium text-sm sm:text-sm">{children}</p>,
+                                ul: ({ children }) => <ul className="my-3 space-y-2">{children}</ul>,
+                                ol: ({ children }) => <ol className="my-3 space-y-2">{children}</ol>,
+                                li: ({ children }) => <li className="leading-relaxed font-medium text-sm">{children}</li>,
+                                strong: ({ children }) => <strong className="text-white font-semibold">{children}</strong>,
+                                code: ({ children }) => <code className="px-2 py-1 rounded-lg glass-panel-dark text-white/90 text-xs font-medium break-all">{children}</code>
+                              }}
+                            >
+                              {message.text}
+                            </ReactMarkdown>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="flex gap-3 sm:gap-5 animate-slideIn">
+                    <div className="flex-shrink-0 w-9 h-9 sm:w-11 sm:h-11">
+                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-panel-dark flex items-center justify-center">
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white/80 animate-spin" strokeWidth={1.5} />
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-2 sm:space-y-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="text-xs sm:text-sm font-semibold text-white/90 tracking-wide">Athlos</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4 rounded-2xl sm:rounded-3xl glass-message">
+                        <div className="flex gap-1.5">
+                          <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                          <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                          <span className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                        </div>
+                        <span className="text-sm text-white/60 font-medium">Thinking...</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+
+          {/* Input area */}
+          <div className="p-4 sm:p-6 lg:p-4 border-t border-white/[0.06] glass-panel-dark">
+            <div className="max-w-3xl mx-auto">
+              <div className="gap-3 sm:gap-4 px-4 sm:px-5 py-2 sm:py-2 rounded-2xl sm:rounded-3xl glass-input transition-all duration-300 flex justify-center items-center">
+                <textarea
+                  ref={textareaRef}
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type your message..."
+                  disabled={isLoading}
+                  rows={1}
+                  className="flex-1 bg-transparent border-none outline-none resize-none text-white placeholder-white/40 text-sm font-medium disabled:opacity-50 max-h-32"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={isLoading || !inputMessage.trim()}
+                  className="flex-shrink-0 w-8 h-8 sm:w-8 sm:h-8 rounded-xl sm:rounded-2xl glass-button disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-white/80 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95 disabled:scale-100"
+                >
+                  <Send className="w-3 h-3 sm:w-3 sm:h-3" strokeWidth={1.5} />
+                </button>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-4 px-2">
+                <a
+                  href="https://chat.whatsapp.com/GJcbh118ExBAl3CoLvpVCg?mode=ems_share_t" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl glass-button text-white/70 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto justify-center min-h-[44px]"
+                >
+                  <FaWhatsapp className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 group-hover:text-green-300 transition-colors" />
+                  <span className="text-sm font-medium">WhatsApp</span>
+                  <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                </a>
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeaQ3wAUbpM2ehslp9ogjqsPXlXCbkw8iyYGDtsw0wLEHdyyw/viewform" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl glass-button text-white/70 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto justify-center min-h-[44px]"
+                >
+                  <FcGoogle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                  <span className="text-sm font-medium">Google Form</span>
+                  <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                </a>
+              </div>
+              <p className="text-xs text-white/30 text-center mt-2 sm:mt-3 font-medium px-2">
+                Need help? Contact us through the links above
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        /* Smooth slide-in animation */
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(15px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-slideIn { animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Refined message hover effects */
+        .glass-message:hover {
+          background: rgba(255, 255, 255, 0.06);
+          transform: translateY(-1px) scale(1.005);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+        .glass-message-user:hover {
+          background: rgba(255, 255, 255, 0.12);
+          transform: translateY(-1px) scale(1.005);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Subtle floating animations */
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.03; }
+          50% { transform: translateY(-8px) rotate(180deg); opacity: 0.05; }
+        }
+        .animate-glass-float { animation: float 12s ease-in-out infinite; }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 0.02; transform: scale(1); }
+          50% { opacity: 0.06; transform: scale(1.05); }
+        }
+        .animate-glass-pulse { animation: pulse 8s ease-in-out infinite; }
+        
+        @keyframes drift {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(8px, -4px) rotate(90deg); }
+          50% { transform: translate(-4px, 8px) rotate(180deg); }
+          75% { transform: translate(-8px, -4px) rotate(270deg); }
+        }
+        .animate-glass-drift { animation: drift 16s ease-in-out infinite; }
+      `}</style>
+    </div>
+  );
+}
+
+export default App;
