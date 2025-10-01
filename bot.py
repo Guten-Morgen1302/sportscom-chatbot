@@ -70,21 +70,29 @@ class SportsBot:
         return "Hey! How can I help with sports info?"
 
     def query_gemini(self, user_message: str) -> str:
-        prompt = f"""{self.system_rules}
-        Knowledge: {self.context}
-        
-        Question: {user_message}
-        
-        Please provide a clear, concise answer based on the knowledge provided."""
+        try:
+            prompt = f"""{self.system_rules}
+            Knowledge: {self.context}
+            
+            Question: {user_message}
+            
+            Please provide a clear, concise answer based on the knowledge provided."""
 
-        response = self.client.models.generate_content(
-            model=self.model, 
-            contents=prompt, 
-            config=GenerateContentConfig(
-                temperature=self.temperature, 
-                max_output_tokens=self.max_tokens)
-            )
-        return (response.text or "").strip()
+            response = self.client.models.generate_content(
+                model=self.model, 
+                contents=prompt, 
+                config=GenerateContentConfig(
+                    temperature=self.temperature, 
+                    max_output_tokens=self.max_tokens)
+                )
+            
+            result = (response.text or "").strip()
+            if not result:
+                return "Ask this on sports update group"
+            return result
+        except Exception as e:
+            print(f"Error querying Gemini: {e}")
+            return "Ask this on sports update group"
 
     def get_response(self, user_input: str) -> str:
         if self._is_small_talk(user_input):
