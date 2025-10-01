@@ -5,10 +5,3 @@ requests==2.32.3
 pydantic==2.10.4
 google-genai==1.39.1
 sift-stack-py
-fastapi==0.115.5
-google-genai==1.39.1
-pydantic==2.10.4
-python-dotenv==1.0.1
-requests==2.32.3
-sift-stack-py
-uvicorn[standard]==0.32.0

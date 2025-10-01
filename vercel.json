@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "main.py",
@@ -13,7 +14,12 @@
   ],
   "functions": {
     "main.py": {
-      "includeFiles": "context.txt"
+      "includeFiles": "{context.txt,static/**}",
+      "memory": 1024,
+      "maxDuration": 30
     }
+  },
+  "env": {
+    "PYTHONUNBUFFERED": "1"
   }
 }
