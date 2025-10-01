@@ -59,11 +59,18 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 - `POST /chat` - Chat endpoint for user queries
 - `POST /keep-alive` - Keep-alive endpoint for server monitoring
 
-### Frontend 
-- **File**: `static/index.html` - Single-page application
-- **Theme**: Dark theme with red accents
-- **Features**: Real-time chat, typing indicators, smooth animations
-- **Integration**: Calls backend API on the same domain
+### Frontend (React + Vite)
+- **Framework**: React 19 with Vite build system
+- **Source**: `src/` directory (App.jsx, main.jsx, index.css)
+- **Build**: Compiles to `static/` directory (served by FastAPI)
+- **Theme**: Dark blue glassmorphism design with blur effects
+- **Features**: 
+  - Real-time chat with smooth animations
+  - 4 example prompt cards for quick access
+  - WhatsApp and Google Form integration buttons
+  - Mobile-responsive with touch-optimized controls
+  - Keep-alive system for production (disabled in dev)
+- **Integration**: Axios calls backend API on same domain
 
 ### AI Integration
 - **Platform**: Google Gemini AI (via google-genai SDK)
