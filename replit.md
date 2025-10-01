@@ -1,7 +1,7 @@
-# SPIT SportsCom Elite Chatbot
+# SPIT SportsCom Chatbot
 
 ## Project Overview
-A sophisticated AI-powered chatbot designed for SPIT SportsCom committee to help students with sports-related queries. The bot responds in Hinglish and provides information about:
+An AI-powered chatbot designed for SPIT SportsCom committee to help students with sports-related queries. The bot responds in Hinglish and provides information about:
 - Agility Cup events and team formation
 - Spoorthi sports fest details
 - Committee selections and interviews
@@ -11,27 +11,20 @@ A sophisticated AI-powered chatbot designed for SPIT SportsCom committee to help
 ## Current Status
 ✅ **Successfully imported and running** - Ready for production deployment
 - Python 3.11 environment with all dependencies installed
-- Flask 2.3.3 backend running smoothly on port 5000 with 0.0.0.0 binding
-- Beautiful Elite-themed frontend with dark mode and red accents
-- Chat functionality working with AI responses and fallback system
-- Deployment configuration set for autoscale production deployment
+- Flask 2.3.3 backend running on port 5000 with 0.0.0.0 binding
+- Dark theme frontend with red accents and chat functionality
+- AI responses via Google Gemini with fallback system
+- Deployment configuration set for autoscale with Gunicorn
 - Workflow configured and running successfully
-- **Vercel UI issue FIXED** - Dark theme now served correctly
-- **PROJECT IMPORT COMPLETE** ✅
 
-## Recent Changes (September 29, 2025)
-- ✅ **Project imported from GitHub** - Fresh clone setup complete
-- ✅ Fixed Flask/MarkupSafe compatibility by upgrading Flask to 2.3.3  
-- ✅ Fixed Google Gemini AI import issues (removed deprecated SDK calls)
-- ✅ Cleaned up requirements.txt duplicates and dependency conflicts
-- ✅ Installed all Python dependencies (Flask 2.3.3, Google Gemini AI, etc.)
-- ✅ Verified all static files and frontend configuration
-- ✅ Configured and started workflow for Flask app on port 5000
-- ✅ Tested application functionality and chat API responses
-- ✅ **FIXED Vercel UI issue** - Updated api/index.py to serve new dark theme
-- ✅ Set up deployment configuration for production autoscale  
-- ✅ Confirmed all systems working in Replit environment
-- ✅ **Import process completed successfully**
+## Recent Changes (October 01, 2025)
+- ✅ **Fresh GitHub import setup completed**
+- ✅ Installed Python 3.11 and all dependencies
+- ✅ Fixed requirements.txt duplicates and added Gunicorn
+- ✅ Verified Flask application runs correctly on port 5000
+- ✅ Tested frontend interface - working perfectly
+- ✅ Configured production deployment with autoscale and Gunicorn
+- ✅ **Project import complete and ready**
 
 ## Project Architecture
 
@@ -40,11 +33,12 @@ A sophisticated AI-powered chatbot designed for SPIT SportsCom committee to help
 - **API endpoint**: `/chat` - Handles user messages and AI responses
 - **Health check**: `/health` - Application status endpoint
 - **Static serving**: `/` - Serves the frontend interface
+- **Port**: 5000 (frontend on 0.0.0.0)
 
 ### Frontend 
 - **File**: `static/index.html` - Single-page application
-- **Theme**: Elite dark theme with animations
-- **Features**: Loading screen, typing indicators, smooth animations
+- **Theme**: Dark theme with red accents
+- **Features**: Typing indicators, smooth animations, real-time chat
 - **Cache-busting**: Headers configured to prevent stale content
 
 ### AI Integration
@@ -57,31 +51,33 @@ A sophisticated AI-powered chatbot designed for SPIT SportsCom committee to help
 - `system_prompt.txt` - AI system instructions
 - `processed_chunks.txt` - Sports chat history for context
 - `requirements.txt` - Python dependencies
-- `vercel.json` - Deployment configuration (legacy)
-
-## User Preferences
-- Hinglish communication style preferred
-- Sports-focused responses with college context
-- Fallback to "Ask this on sports update group" for unknown queries
+- `vercel.json` - Legacy deployment configuration
 
 ## Deployment Settings
 - **Target**: Autoscale (stateless web application)
-- **Runtime**: Python 3.11
+- **Runtime**: Python 3.11 with Gunicorn WSGI server
 - **Port**: 5000 (frontend only)
-- **Command**: `python app.py`
+- **Workers**: 2 Gunicorn workers with port reuse
+- **Command**: `gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 app:app`
 
 ## Environment Variables
-- `GEMINI_API_KEY` - Google Gemini API key (securely managed via Replit Secrets)
-  - ✅ Can be updated anytime through Replit's environment variable panel
-  - ✅ Graceful fallback to rule-based responses when unavailable
-  - ✅ No hardcoded keys anywhere in the codebase
+- `GEMINI_API_KEY` - Google Gemini API key (optional)
+  - Can be set via Replit Secrets for AI responses
+  - Graceful fallback to rule-based responses when unavailable
+  - No hardcoded keys in codebase
 
-## Known Issues
-- LSP diagnostics show import errors (cosmetic only - app runs fine)
-- Loading screen animation required JavaScript fix for proper removal
+## Dependencies
+- Flask 2.3.3 - Web framework
+- Flask-CORS 4.0.0 - CORS support
+- google-generativeai 0.8.5 - Gemini AI SDK
+- python-dotenv 1.0.1 - Environment variable management
+- requests 2.32.5 - HTTP library
+- gunicorn 21.2.0 - Production WSGI server
 
 ## Technical Notes
-- Application includes sophisticated text fingerprinting for context matching
+- Application includes text fingerprinting for context matching
 - Response validation ensures proper event isolation
-- Cache-busting headers prevent reload issues in Replit iframe environment
-- Beautiful particle system and gradient animations for premium feel
+- Cache-busting headers prevent reload issues in Replit iframe
+- All static files served with proper MIME types
+- Development server runs with debug mode for easier testing
+- Production deployment uses Gunicorn for better performance
