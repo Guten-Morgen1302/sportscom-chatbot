@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "main.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.9"
+      }
     }
   ],
   "routes": [
@@ -11,15 +14,5 @@
       "src": "/(.*)",
       "dest": "main.py"
     }
-  ],
-  "functions": {
-    "main.py": {
-      "includeFiles": "{context.txt,static/**}",
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "PYTHONUNBUFFERED": "1"
-  }
+  ]
 }
