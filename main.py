@@ -30,6 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/assets", StaticFiles(directory="static/assets"), name="assets")
+
 bot = None
 
 def get_bot():
@@ -137,3 +139,10 @@ if __name__ == "__main__":
     print(f"🌐 Allowed origins: {origins_list}")
     
     uvicorn.run(app, host=host, port=port, reload=reload)
+
+@app.get("/sports-favicon.jpg")
+async def serve_favicon():
+    favicon_path = Path(__file__).parent / "static" / "sports-favicon.jpg"
+    if favicon_path.exists():
+        return FileResponse(favicon_path, media_type="image/jpeg")
+    return {"error": "Favicon not found"}

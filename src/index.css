@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+  --glass-shadow-lg: 0 32px 64px -12px rgba(0, 0, 0, 0.35);
+  --glass-blur: 20px;
+  --glass-blur-sm: 12px;
+  --glass-blur-xs: 8px;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.glass-button {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-xs)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xs)) saturate(130%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus-within {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.glass-message {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(var(--glass-blur-xs)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xs)) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.glass-message-user {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(var(--glass-blur-xs)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-xs)) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.glass-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.glass-scroll::-webkit-scrollbar { width: 6px; }
+.glass-scroll::-webkit-scrollbar-track { background: transparent; }
+.glass-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.glass-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+@media (max-width: 640px) {
+  .glass-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  textarea {
+    font-size: 16px !important;
+  }
+}
