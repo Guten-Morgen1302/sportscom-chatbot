@@ -17,7 +17,7 @@ GEMINI_API_KEY environment variable is not set in Vercel.
 - Click "Add New"
 - Add:
   - **Key**: `GEMINI_API_KEY`
-  - **Value**: `AIzaSyCNe1gaa7EwQoVum6zJf35n2UNKjwiyuIs` (your API key)
+  - **Value**: Your Gemini API key (get one from https://aistudio.google.com/apikey)
 - Select all environments (Production, Preview, Development)
 - Click "Save"
 
