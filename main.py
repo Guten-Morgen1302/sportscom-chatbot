@@ -16,8 +16,11 @@ app = FastAPI(
     description="AI-powered sports committee assistant API"
 )
 
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000,https://sports-spit-chatbot.vercel.app")
-origins_list = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
+if allowed_origins == "*":
+    origins_list = ["*"]
+else:
+    origins_list = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
