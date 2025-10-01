@@ -108,8 +108,9 @@ async def chat_endpoint(request: ChatRequest):
         response_text = bot.get_response(request.message)
         return ChatResponse(response=response_text)
     except Exception as e:
-        print(f"Error in chat endpoint: {e}")
-        raise HTTPException(status_code=500, detail=f"Error processing request: {str(e)}")
+        error_msg = str(e)
+        print(f"Error in chat endpoint: {error_msg}")
+        raise HTTPException(status_code=500, detail=f"Gemini API Error: {error_msg}")
 
 if __name__ == "__main__":
     import uvicorn
