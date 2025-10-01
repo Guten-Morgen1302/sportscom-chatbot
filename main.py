@@ -140,7 +140,7 @@ if __name__ == "__main__":
     
     uvicorn.run(app, host=host, port=port, reload=reload)
 
-@app.get("/sports-favicon.jpg")
+@app.get("/sports-favicon.png")
 async def serve_favicon():
     favicon_path = Path(__file__).parent / "static" / "sports-favicon.jpg"
     if favicon_path.exists():

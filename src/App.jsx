@@ -156,7 +156,7 @@ function App() {
           <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-white/[0.06] glass-panel-dark">
             <div className="flex items-center gap-3 sm:gap-4 min-w-0">
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-button flex items-center justify-center flex-shrink-0">
-                <img src="/sports-favicon.jpg" alt="" />
+                <img src="/sports-favicon.png" alt="" />
               </div>
               <div className="min-w-0">
                 <h1 className="text-lg sm:text-xl font-semibold text-white tracking-tight truncate">Athlos - Sports AI</h1>
@@ -212,7 +212,7 @@ function App() {
                         </div>
                       ) : (
                         <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl glass-panel-dark flex items-center justify-center">
-                          <img src="/sports-favicon.jpg" alt="" />
+                          <img src="/sports-favicon.png" alt="" />
                         </div>
                       )}
                     </div>
