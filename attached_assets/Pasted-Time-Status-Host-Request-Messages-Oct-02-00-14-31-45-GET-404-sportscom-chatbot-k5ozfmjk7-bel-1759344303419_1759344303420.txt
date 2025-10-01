@@ -1,0 +1,366 @@
+Time
+Status
+Host
+Request
+Messages
+Oct 02 00:14:31.45
+GET
+404
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/favicon.png
+127.0.0.1 - - [01/Oct/2025 18:44:31] "GET /favicon.png HTTP/1.1" 404 -
+Oct 02 00:14:31.31
+GET
+404
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:44:31] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:14:31.05
+GET
+200
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:44:31] "GET / HTTP/1.1" 200 -
+Oct 02 00:13:44.55
+POST
+500
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:43:44] "POST /chat HTTP/1.1" 500 -
+Oct 02 00:13:39.80
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:43:40] "GET / HTTP/1.1" 200 -
+Oct 02 00:13:34.27
+GET
+404
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:43:34] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:13:34.24
+GET
+404
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:43:34] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:13:33.73
+GET
+200
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:43:33] "GET / HTTP/1.1" 200 -
+Oct 02 00:13:33.69
+GET
+200
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:43:33] "GET / HTTP/1.1" 200 -
+Oct 02 00:13:29.80
+GET
+200
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:43:33] "GET / HTTP/1.1" 200 -
+Oct 02 00:13:29.80
+GET
+200
+sportscom-chatbot-k5ozfmjk7-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:43:33] "GET / HTTP/1.1" 200 -
+Oct 02 00:10:57.27
+POST
+500
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:40:57] "POST /chat HTTP/1.1" 500 -
+Oct 02 00:10:53.81
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:40:54] "GET / HTTP/1.1" 200 -
+Oct 02 00:10:30.07
+GET
+404
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:40:30] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:10:30.05
+GET
+404
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:40:30] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:10:29.37
+GET
+200
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:40:29] "GET / HTTP/1.1" 200 -
+Oct 02 00:10:29.36
+GET
+200
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:40:29] "GET / HTTP/1.1" 200 -
+Oct 02 00:10:25.43
+GET
+200
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:40:29] "GET / HTTP/1.1" 200 -
+Oct 02 00:10:25.35
+GET
+200
+sportscom-chatbot-2kse72ij5-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:40:29] "GET / HTTP/1.1" 200 -
+Oct 02 00:06:55.46
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:36:55] "GET / HTTP/1.1" 200 -
+Oct 02 00:06:42.17
+GET
+404
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/favicon.png
+127.0.0.1 - - [01/Oct/2025 18:36:42] "GET /favicon.png HTTP/1.1" 404 -
+Oct 02 00:06:42.07
+GET
+404
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:36:42] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:06:41.78
+GET
+200
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:36:41] "GET / HTTP/1.1" 200 -
+Oct 02 00:05:21.34
+POST
+500
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:35:21] "POST /chat HTTP/1.1" 500 -
+Oct 02 00:05:18.33
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:35:18] "GET / HTTP/1.1" 200 -
+Oct 02 00:05:16.85
+GET
+404
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:35:16] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:05:16.22
+GET
+404
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:35:16] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:05:16.03
+GET
+200
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:35:16] "GET / HTTP/1.1" 200 -
+Oct 02 00:05:15.56
+GET
+200
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:35:15] "GET / HTTP/1.1" 200 -
+Oct 02 00:05:11.96
+GET
+200
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:35:15] "GET / HTTP/1.1" 200 -
+Oct 02 00:05:11.83
+GET
+200
+sportscom-chatbot-i9ddl4z89-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:35:15] "GET / HTTP/1.1" 200 -
+Oct 02 00:04:52.66
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:34:53] "GET / HTTP/1.1" 200 -
+Oct 02 00:03:54.20
+GET
+404
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:33:54] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:03:54.08
+GET
+404
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:33:54] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:03:53.48
+GET
+200
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:33:53] "GET / HTTP/1.1" 200 -
+Oct 02 00:03:53.42
+GET
+200
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:33:53] "GET / HTTP/1.1" 200 -
+Oct 02 00:03:49.60
+GET
+200
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:33:53] "GET / HTTP/1.1" 200 -
+Oct 02 00:03:49.55
+GET
+200
+sportscom-chatbot-5pfj7ec6m-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:33:53] "GET / HTTP/1.1" 200 -
+Oct 02 00:02:47.17
+GET
+404
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:32:47] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:02:47.02
+GET
+404
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:32:47] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 02 00:02:46.32
+GET
+200
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:32:46] "GET / HTTP/1.1" 200 -
+Oct 02 00:02:46.31
+GET
+200
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:32:46] "GET / HTTP/1.1" 200 -
+Oct 02 00:02:42.55
+GET
+200
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:32:46] "GET / HTTP/1.1" 200 -
+Oct 02 00:02:42.48
+GET
+200
+sportscom-chatbot-g8a80cv2b-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:32:46] "GET / HTTP/1.1" 200 -
+Oct 01 23:55:26.30
+GET
+404
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/favicon.png
+127.0.0.1 - - [01/Oct/2025 18:25:26] "GET /favicon.png HTTP/1.1" 404 -
+Oct 01 23:55:26.20
+GET
+404
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:25:26] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 01 23:55:25.92
+GET
+200
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:25:26] "GET / HTTP/1.1" 200 -
+Oct 01 23:52:01.84
+POST
+500
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:22:02] "POST /chat HTTP/1.1" 500 -
+Oct 01 23:51:58.65
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:21:58] "GET / HTTP/1.1" 200 -
+Oct 01 23:51:56.77
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:21:57] "GET / HTTP/1.1" 200 -
+Oct 01 23:51:54.21
+GET
+405
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:21:54] "GET /chat HTTP/1.1" 405 -
+Oct 01 23:50:06.54
+GET
+405
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:20:06] "GET /chat HTTP/1.1" 405 -
+Oct 01 23:49:55.65
+POST
+500
+sportscom-chatbot.vercel.app
+/chat
+127.0.0.1 - - [01/Oct/2025 18:19:56] "POST /chat HTTP/1.1" 500 -
+Oct 01 23:49:48.78
+GET
+200
+sportscom-chatbot.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:19:50] "GET / HTTP/1.1" 200 -
+Oct 01 23:49:34.33
+GET
+404
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:19:34] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 01 23:49:34.26
+GET
+404
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/favicon.ico
+127.0.0.1 - - [01/Oct/2025 18:19:34] "GET /favicon.ico HTTP/1.1" 404 -
+Oct 01 23:49:33.86
+GET
+200
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:19:33] "GET / HTTP/1.1" 200 -
+Oct 01 23:49:33.69
+GET
+200
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:19:33] "GET / HTTP/1.1" 200 -
+Oct 01 23:49:29.82
+GET
+200
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:19:33] "GET / HTTP/1.1" 200 -
+Oct 01 23:49:29.64
+GET
+200
+sportscom-chatbot-5oadpxk6s-beluga1302s-projects.vercel.app
+/
+127.0.0.1 - - [01/Oct/2025 18:19:33] "GET / HTTP/1.1" 200 -
+No more logs to show within selected timeline
