@@ -20,13 +20,15 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 - ✅ **Successfully imported from GitHub and configured for Replit**
 - ✅ Installed Python 3.11 environment
 - ✅ Installed all required dependencies (FastAPI, Uvicorn, google-genai, etc.)
-- ✅ Created .env file with environment variables from attached_assets
+- ✅ Cleaned up requirements.txt (removed duplicates)
+- ✅ Configured GEMINI_API_KEY secret in Replit
 - ✅ Configured workflow to run FastAPI server on port 5000 with 0.0.0.0 binding
 - ✅ Updated CORS settings to allow all origins for Replit proxy compatibility
 - ✅ Tested all endpoints: /health, /chat - all working perfectly with Gemini AI
 - ✅ Verified frontend displays correctly with dark theme and red accents
 - ✅ Configured deployment settings for production (autoscale deployment)
 - ✅ Server running successfully with bot initialized
+- ✅ Chat functionality tested and working correctly
 
 ## Project Architecture
 
@@ -111,12 +113,29 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 ```
 
 ## Vercel Deployment
-The project is configured for one-click Vercel deployment:
+
+### Important: Environment Variables Required!
+The chatbot **will not work** on Vercel without setting environment variables. If you're getting 500 errors or "Something went wrong!" messages, follow these steps:
+
+### Deployment Steps:
 1. Push your code to GitHub
 2. Connect GitHub repo to Vercel
-3. In Vercel project settings, add environment variables:
-   - `GEMINI_API_KEY` - Your Google Gemini API key
-   - `GEMINI_MODEL` - gemini-2.5-flash
-   - `API_TEMPERATURE` - 0.3
-   - `API_MAX_TOKENS` - 500
-4. Deploy - Vercel will automatically use `vercel.json` configuration
+3. **CRITICAL**: In Vercel project settings → Environment Variables, add:
+   - `GEMINI_API_KEY` - Your Google Gemini API key (REQUIRED)
+   - `GEMINI_MODEL` - gemini-2.5-flash (optional, defaults to this)
+   - `API_TEMPERATURE` - 0.3 (optional)
+   - `API_MAX_TOKENS` - 500 (optional)
+4. Redeploy the project after adding environment variables
+
+### Troubleshooting Vercel Deployment:
+- **Error: 500 status / "Something went wrong!"** 
+  → GEMINI_API_KEY is not set in Vercel environment variables
+  → Go to Project Settings → Environment Variables → Add GEMINI_API_KEY
+  → Redeploy after adding the key
+  
+- **Error: "Missing key inputs argument"**
+  → Same as above - add GEMINI_API_KEY to Vercel environment variables
+
+- **Bot not responding**
+  → Check Vercel function logs for detailed error messages
+  → Verify API key is valid and has Gemini API access
