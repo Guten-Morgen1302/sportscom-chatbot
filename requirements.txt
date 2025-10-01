@@ -3,11 +3,4 @@ uvicorn[standard]==0.32.0
 python-dotenv==1.0.1
 requests==2.32.3
 pydantic==2.10.4
-google-genai
-fastapi==0.115.5
-flask
-flask-cors
-google-genai
-google-generativeai
-pydantic==2.10.4
-uvicorn[standard]==0.32.0
+google-genai==1.39.1

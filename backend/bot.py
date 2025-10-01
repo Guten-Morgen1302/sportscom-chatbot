@@ -75,7 +75,7 @@ class SportsBot:
         
         Question: {user_message}
         
-        Please provide a clear, concise answer citing the specific document source when possible."""
+        Please provide a clear, concise answer based on the knowledge provided."""
 
         response = self.client.models.generate_content(
             model=self.model, 

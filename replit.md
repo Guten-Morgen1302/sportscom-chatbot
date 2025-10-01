@@ -9,75 +9,103 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 - General sports events and schedules
 
 ## Current Status
-✅ **Successfully imported and running** - Ready for production deployment
-- Python 3.11 environment with all dependencies installed
-- Flask 2.3.3 backend running on port 5000 with 0.0.0.0 binding
-- Dark theme frontend with red accents and chat functionality
-- AI responses via Google Gemini with fallback system
-- Deployment configuration set for autoscale with Gunicorn
-- Workflow configured and running successfully
+✅ **FastAPI Backend Successfully Migrated** - Ready for production
+- Python 3.11 environment with FastAPI backend
+- Backend running on port 5000 with 0.0.0.0 binding
+- Dark theme frontend with red accents
+- Google Gemini AI integration with improved context handling
+- All endpoints tested and working perfectly
 
 ## Recent Changes (October 01, 2025)
-- ✅ **Fresh GitHub import setup completed**
-- ✅ Installed Python 3.11 and all dependencies
-- ✅ Fixed requirements.txt duplicates and added Gunicorn
-- ✅ Verified Flask application runs correctly on port 5000
-- ✅ Tested frontend interface - working perfectly
-- ✅ Configured production deployment with autoscale and Gunicorn
-- ✅ **Project import complete and ready**
+- ✅ **Migrated from Flask to FastAPI backend**
+- ✅ Created clean backend folder structure
+- ✅ Integrated friend's working backend code
+- ✅ Installed FastAPI, Uvicorn, and google-genai dependencies
+- ✅ Updated context.txt with comprehensive sports information
+- ✅ Configured workflow to run FastAPI with auto-reload
+- ✅ Tested all endpoints: /health, /chat, /keep-alive
+- ✅ Verified frontend integration working perfectly
+- ✅ Removed old Flask backend files
 
 ## Project Architecture
 
-### Backend (Flask)
-- **Main app**: `app.py` - Primary Flask application
-- **API endpoint**: `/chat` - Handles user messages and AI responses
-- **Health check**: `/health` - Application status endpoint
-- **Static serving**: `/` - Serves the frontend interface
-- **Port**: 5000 (frontend on 0.0.0.0)
+### Backend (FastAPI)
+- **Location**: `backend/` folder
+- **Main app**: `backend/main.py` - FastAPI application
+- **Bot logic**: `backend/bot.py` - SportsBot class with Gemini AI
+- **Context**: `backend/context.txt` - Sports knowledge base
+- **Configuration**: `backend/.env` - Environment variables
+- **Port**: 5000 (frontend and API on same port)
+
+### Backend Endpoints
+- `GET /` - Serves the frontend HTML
+- `GET /health` - Health check endpoint
+- `POST /chat` - Chat endpoint for user queries
+- `POST /keep-alive` - Keep-alive endpoint for server monitoring
 
 ### Frontend 
 - **File**: `static/index.html` - Single-page application
 - **Theme**: Dark theme with red accents
-- **Features**: Typing indicators, smooth animations, real-time chat
-- **Cache-busting**: Headers configured to prevent stale content
+- **Features**: Real-time chat, typing indicators, smooth animations
+- **Integration**: Calls backend API on the same domain
 
 ### AI Integration
-- **Platform**: Google Gemini AI via python_gemini integration
-- **Fallback**: Rule-based responses when API key unavailable
-- **Context**: Uses processed sports committee chat history
-- **Validation**: Response length limits and event isolation rules
+- **Platform**: Google Gemini AI (via google-genai SDK)
+- **Model**: gemini-2.5-flash
+- **Features**: 
+  - Smart small talk detection
+  - Context-aware responses from knowledge base
+  - Profanity filtering
+  - Committee comparison handling
+  - Hinglish support
 
-### Data Files
-- `system_prompt.txt` - AI system instructions
-- `processed_chunks.txt` - Sports chat history for context
-- `requirements.txt` - Python dependencies
-- `vercel.json` - Legacy deployment configuration
-
-## Deployment Settings
-- **Target**: Autoscale (stateless web application)
-- **Runtime**: Python 3.11 with Gunicorn WSGI server
-- **Port**: 5000 (frontend only)
-- **Workers**: 2 Gunicorn workers with port reuse
-- **Command**: `gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 app:app`
+### Key Features
+- **Small Talk**: Recognizes greetings and responds naturally
+- **Context Matching**: Uses knowledge base for accurate answers
+- **Fallback Responses**: Graceful handling when information unavailable
+- **Response Validation**: Ensures appropriate and accurate responses
 
 ## Environment Variables
-- `GEMINI_API_KEY` - Google Gemini API key (optional)
-  - Can be set via Replit Secrets for AI responses
-  - Graceful fallback to rule-based responses when unavailable
-  - No hardcoded keys in codebase
+- `GEMINI_API_KEY` - Google Gemini API key
+- `GEMINI_MODEL` - Model to use (default: gemini-2.5-flash)
+- `API_TEMPERATURE` - AI temperature setting (default: 0.3)
+- `API_MAX_TOKENS` - Max response tokens (default: 500)
+- `HOST` - Server host (0.0.0.0)
+- `PORT` - Server port (5000)
+- `RELOAD` - Auto-reload on code changes (true for development)
+- `ALLOWED_ORIGINS` - CORS allowed origins
 
 ## Dependencies
-- Flask 2.3.3 - Web framework
-- Flask-CORS 4.0.0 - CORS support
-- google-generativeai 0.8.5 - Gemini AI SDK
-- python-dotenv 1.0.1 - Environment variable management
-- requests 2.32.5 - HTTP library
-- gunicorn 21.2.0 - Production WSGI server
+- fastapi==0.115.5 - Modern web framework
+- uvicorn==0.32.0 - ASGI server
+- pydantic==2.10.4 - Data validation
+- google-genai - Google Gemini AI SDK
+- python-dotenv==1.0.1 - Environment variable management
+- requests==2.32.3 - HTTP library
+
+## Workflow Configuration
+- **Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port 5000 --reload`
+- **Port**: 5000
+- **Output**: Webview (frontend)
+- **Auto-reload**: Enabled for development
 
 ## Technical Notes
-- Application includes text fingerprinting for context matching
-- Response validation ensures proper event isolation
-- Cache-busting headers prevent reload issues in Replit iframe
-- All static files served with proper MIME types
-- Development server runs with debug mode for easier testing
-- Production deployment uses Gunicorn for better performance
+- FastAPI provides automatic API documentation at `/docs`
+- Bot uses text fingerprinting for context matching
+- Small talk detection uses regex patterns
+- Frontend served with cache-busting headers
+- CORS configured for multiple origins
+- All responses validated before sending
+
+## File Structure
+```
+├── backend/
+│   ├── main.py          # FastAPI application
+│   ├── bot.py           # SportsBot class
+│   ├── context.txt      # Knowledge base
+│   └── .env             # Environment variables
+├── static/
+│   └── index.html       # Frontend application
+├── requirements.txt     # Python dependencies
+└── replit.md           # This file
+```
