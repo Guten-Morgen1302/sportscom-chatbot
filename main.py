@@ -32,16 +32,26 @@ app.add_middleware(
 
 bot = None
 
+def get_bot():
+    """Lazy initialization of bot for Vercel serverless compatibility"""
+    global bot
+    if bot is None:
+        try:
+            context_file = Path(__file__).parent / "context.txt"
+            bot = SportsBot(str(context_file))
+            print(f"✅ Sports bot initialized with {context_file}")
+        except Exception as e:
+            print(f"❌ Error initializing bot: {e}")
+            raise HTTPException(status_code=500, detail=f"Bot initialization failed: {str(e)}")
+    return bot
+
 @app.on_event("startup")
 async def startup_event():
-    global bot
+    """Optional startup - will lazy-load if this doesn't run (Vercel compatibility)"""
     try:
-        context_file = "context.txt"
-        bot = SportsBot(context_file)
-        print(f"✅ Sports bot initialized with {context_file}")
+        get_bot()
     except Exception as e:
-        print(f"❌ Error initializing bot: {e}")
-        raise
+        print(f"⚠️ Startup initialization skipped (will lazy-load): {e}")
 
 class ChatRequest(BaseModel):
     message: str
@@ -68,12 +78,15 @@ async def serve_frontend():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "bot_ready": bot is not None}
+    try:
+        current_bot = get_bot()
+        return {"status": "healthy", "bot_ready": current_bot is not None}
+    except Exception as e:
+        return {"status": "unhealthy", "bot_ready": False, "error": str(e)}
 
 @app.post("/keep-alive")
 async def keep_alive():
-    if not bot:
-        raise HTTPException(status_code=500, detail="Bot not initialized")
+    current_bot = get_bot()
     
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
@@ -83,7 +96,7 @@ async def keep_alive():
         )
     
     try:
-        response_text = bot.get_response("what is agility")
+        response_text = current_bot.get_response("what is agility")
         return {"status": "alive", "timestamp": os.environ.get("TZ", "UTC")}
     except Exception as e:
         print(f"Error in keep-alive endpoint: {e}")
@@ -91,8 +104,7 @@ async def keep_alive():
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
-    if not bot:
-        raise HTTPException(status_code=500, detail="Bot not initialized")
+    current_bot = get_bot()
     
     if not request.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty")
@@ -105,7 +117,7 @@ async def chat_endpoint(request: ChatRequest):
         )
     
     try:
-        response_text = bot.get_response(request.message)
+        response_text = current_bot.get_response(request.message)
         return ChatResponse(response=response_text)
     except Exception as e:
         error_msg = str(e)
