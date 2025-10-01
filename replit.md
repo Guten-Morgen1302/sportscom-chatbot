@@ -30,11 +30,10 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 ## Project Architecture
 
 ### Backend (FastAPI)
-- **Location**: `backend/` folder
-- **Main app**: `backend/main.py` - FastAPI application
-- **Bot logic**: `backend/bot.py` - SportsBot class with Gemini AI
-- **Context**: `backend/context.txt` - Sports knowledge base
-- **Configuration**: `backend/.env` - Environment variables
+- **Main app**: `main.py` - FastAPI application
+- **Bot logic**: `bot.py` - SportsBot class with Gemini AI
+- **Context**: `context.txt` - Sports knowledge base
+- **Configuration**: `.env` - Environment variables
 - **Port**: 5000 (frontend and API on same port)
 
 ### Backend Endpoints
@@ -84,7 +83,7 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 - requests==2.32.3 - HTTP library
 
 ## Workflow Configuration
-- **Command**: `cd backend && uvicorn main:app --host 0.0.0.0 --port 5000 --reload`
+- **Command**: `uvicorn main:app --host 0.0.0.0 --port 5000 --reload`
 - **Port**: 5000
 - **Output**: Webview (frontend)
 - **Auto-reload**: Enabled for development
@@ -99,13 +98,13 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 
 ## File Structure
 ```
-├── backend/
-│   ├── main.py          # FastAPI application
-│   ├── bot.py           # SportsBot class
-│   ├── context.txt      # Knowledge base
-│   └── .env             # Environment variables
+├── main.py              # FastAPI application
+├── bot.py               # SportsBot class
+├── context.txt          # Knowledge base
+├── .env                 # Environment variables
 ├── static/
 │   └── index.html       # Frontend application
 ├── requirements.txt     # Python dependencies
-└── replit.md           # This file
+├── vercel.json          # Vercel deployment config
+└── replit.md            # This file
 ```

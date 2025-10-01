@@ -48,7 +48,7 @@ class ChatResponse(BaseModel):
 
 @app.get("/")
 async def serve_frontend():
-    html_path = Path(__file__).parent.parent / "static" / "index.html"
+    html_path = Path(__file__).parent / "static" / "index.html"
     if html_path.exists():
         with open(html_path, "r", encoding="utf-8") as f:
             html_content = f.read()
