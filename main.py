@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
 @app.get("/sports-favicon.png")
 async def serve_favicon():
-    favicon_path = Path(__file__).parent / "static" / "sports-favicon.jpg"
+    favicon_path = Path(__file__).parent / "static" / "sports-favicon.png"
     if favicon_path.exists():
-        return FileResponse(favicon_path, media_type="image/jpeg")
+        return FileResponse(favicon_path, media_type="image/png")
     return {"error": "Favicon not found"}

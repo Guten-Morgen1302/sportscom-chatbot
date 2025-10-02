@@ -29,6 +29,7 @@ An AI-powered chatbot designed for SPIT SportsCom committee to help students wit
 - ✅ Verified bot initialization and all endpoints working
 - ✅ Tested chat functionality with Gemini AI integration
 - ✅ Configured autoscale deployment with build steps
+- ✅ **Fixed logo/favicon display issue** - Updated backend endpoint to serve sports-favicon.png correctly
 - ✅ All systems operational and ready for use
 
 ### Previous Setup (October 01, 2025)
